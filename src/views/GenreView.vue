@@ -2,46 +2,31 @@
   <section class="genre padding">
     <div class="container">
       <h1 class="genre__title title">Жанры фильмов</h1>
-      <ul class="list">
-        <router-link class="genre__item" to="/types">
-          <img src="" alt="Genre" width="290" height="220">
-          <p class="genre__text">Детектив</p>
-        </router-link>
-        <router-link class="genre__item" to="/types">
-          <img src="/img/genre.png" alt="Genre" width="290" height="220">
-          <p class="genre__text">Детектив</p>
-        </router-link>
-        <router-link class="genre__item" to="/types">
-          <img src="/img/genre.png" alt="Genre" width="290" height="220">
-          <p class="genre__text">Детектив</p>
-        </router-link>
-        <router-link class="genre__item" to="/types">
-          <img src="/img/genre.png" alt="Genre" width="290" height="220">
-          <p class="genre__text">Детектив</p>
-        </router-link>
-        <router-link class="genre__item" to="/types">
-          <img src="/img/genre.png" alt="Genre" width="290" height="220">
-          <p class="genre__text">Детектив</p>
-        </router-link>
-        <router-link class="genre__item" to="/types">
-          <img src="/img/genre.png" alt="Genre" width="290" height="220">
-          <p class="genre__text">Детектив</p>
-        </router-link>
-        <router-link class="genre__item" to="/types">
-          <img src="/img/genre.png" alt="Genre" width="290" height="220">
-          <p class="genre__text">Детектив</p>
-        </router-link>
-        <router-link class="genre__item" to="/types">
-          <img src="/img/genre.png" alt="Genre" width="290" height="220">
-          <p class="genre__text">Детектив</p>
-        </router-link>
-      </ul>
+      <div class="list">
+        <GenreCard
+          v-for="genre in genres"
+          :key="genre.id"
+          genre="genre"
+        />
+      </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
+import {ref} from 'vue'
+import {getGenreFilms} from "@/api/product"
+import GenreCard from "@/components/GenreCard.vue"
+import type { IProduct } from '@/types/product';
 
+const genres = ref<IProduct[]>([])
+
+const loadGenreFilms = async () => {
+  const response = await getGenreFilms()
+  genres.value = response
+}
+
+loadGenreFilms()
 </script>
 
 <style scoped>

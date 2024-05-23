@@ -26,7 +26,19 @@ const router = createRouter({
     {
       name: 'account',
       path: '/account',
-      component: () => import('@/views/AccountView.vue')
+      component: () => import('@/views/AccountView.vue'),
+      children: [
+        {
+          name: 'favorites',
+          path: '/account/favorites',
+          component: () => import('@/views/AccountFavoritesView.vue')
+        },
+        {
+          name: 'settings',
+          path: '/account/settings',
+          component: () => import('@/views/AccountSettingsView.vue')
+        }
+      ]
     }
   ]
 })

@@ -1,8 +1,8 @@
 <template>
   <section class="hero">
-    <img src="/img/hero.png" alt="Film" width="900" height="680">
-    <div class="container">
+    <div class="hero__container container">
       <div class="hero__item">
+        <img src="" alt="Film image" width="900" height="680">
         <div class="hero__wrapper flex">
           <p class="hero__rating flex">
             <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">

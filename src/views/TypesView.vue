@@ -9,49 +9,7 @@
       </h1>
       <ul class="list mb-64">
         <router-link class="item" to="/film">
-          <img src="" alt="Films photo" width="224" height="336">
-        </router-link>
-        <router-link class="item" to="/film">
-          <img src="/img/films-1.png" alt="Films photo" width="224" height="336">
-        </router-link>
-        <router-link class="item" to="/film">
-          <img src="/img/films-1.png" alt="Films photo" width="224" height="336">
-        </router-link>
-        <router-link class="item" to="/film">
-          <img src="/img/films-1.png" alt="Films photo" width="224" height="336">
-        </router-link>
-        <router-link class="item" to="/film">
-          <img src="/img/films-1.png" alt="Films photo" width="224" height="336">
-        </router-link>
-        <router-link class="item" to="/film">
-          <img src="/img/films-1.png" alt="Films photo" width="224" height="336">
-        </router-link>
-        <router-link class="item" to="/film">
-          <img src="/img/films-1.png" alt="Films photo" width="224" height="336">
-        </router-link>
-        <router-link class="item" to="/film">
-          <img src="/img/films-1.png" alt="Films photo" width="224" height="336">
-        </router-link>
-        <router-link class="item" to="/film">
-          <img src="/img/films-1.png" alt="Films photo" width="224" height="336">
-        </router-link>
-        <router-link class="item" to="/film">
-          <img src="/img/films-1.png" alt="Films photo" width="224" height="336">
-        </router-link>
-        <router-link class="item" to="/film">
-          <img src="/img/films-1.png" alt="Films photo" width="224" height="336">
-        </router-link>
-        <router-link class="item" to="/film">
-          <img src="/img/films-1.png" alt="Films photo" width="224" height="336">
-        </router-link>
-        <router-link class="item" to="/film">
-          <img src="/img/films-1.png" alt="Films photo" width="224" height="336">
-        </router-link>
-        <router-link class="item" to="/film">
-          <img src="/img/films-1.png" alt="Films photo" width="224" height="336">
-        </router-link>
-        <router-link class="item" to="/film">
-          <img src="/img/films-1.png" alt="Films photo" width="224" height="336">
+          <img src="" alt="Films image" width="224" height="336">
         </router-link>
       </ul>
       <a class="btn" href="#">Показать ещё</a>
