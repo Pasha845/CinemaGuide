@@ -189,6 +189,10 @@ ul, ol {
   padding-bottom: 160px;
 }
 
+.mb-24 {
+  margin-bottom: 24px;
+}
+
 .mb-64 {
   margin-bottom: 64px;
 }
@@ -202,7 +206,7 @@ ul, ol {
   display: inline-block;
   border: none;
   border-radius: 28px;
-  padding: 16px 48px;
+  padding: 18px 48px;
   font-weight: 700;
   color: white;
   background: #6A5DC2;
@@ -250,37 +254,66 @@ ul, ol {
 
 .modal {
   position: fixed;
+  z-index: 99;
+  top: 0;
+  left: 0;
+  display: none;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-active {
+  display: block;
+}
+
+.modal-container,
+.modal-trailer {
+  position: absolute;
   top: 50%;
   left: 50%;
-  z-index: 99;
-  display: none;
-  border-radius: 24px;
-  padding: 64px 40px;
-  text-align: center;
-  font-weight: 700;
-  color: black;
-  background: white;
   transform: translate(-50%, -50%);
 }
 
-.modal.active ~ * {
-  display: block;
-  opacity: 1;
+.modal-container {
+  border-radius: 24px;
+  padding: 64px 40px;
+  text-align: center;
+  color: black;
+  background: white;
+}
+
+.modal-trailer {
+  border: 1px solid #FFFFFF80;
+  width: 960px;
+  height: 540px;
+  background: #393B3C;
 }
 
 .modal-exit {
   position: absolute;
   top: 0;
   right: -72px;
+  border: none;
   border-radius: 50%;
   padding: 14.8px;
   line-height: 1px;
   background: white;
+  cursor: pointer;
 }
-
 .modal-logo {
   display: inline-block;
   margin-bottom: 40px;
+}
+
+.modal-title {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 700;
+}
+
+.modal-text {
+  max-width: 340px;
 }
 
 .modal-form {
@@ -344,7 +377,12 @@ ul, ol {
 }
 
 .modal-btn {
-  margin-bottom: 24px;
+  padding: 16px 0;
+  width: 100%;
+}
+
+.modal-link {
+  font-weight: 700;
 }
 
 @media (max-width: 576px) {
@@ -392,8 +430,24 @@ ul, ol {
 .hero__rating {
   border-radius: 16px;
   padding: 4px 12px;
+  height: 26px;
   font-weight: 700;
+}
+
+.yellow {
+  background: #A59400;
+}
+
+.green {
   background: #308E21;
+}
+
+.gray {
+  background: #777777;
+}
+
+.red {
+  background: #C82020;
 }
 
 .hero__rating svg {
@@ -427,13 +481,19 @@ ul, ol {
 }
 
 .hero__sublink {
-  padding: 15px 24px;
+  padding: 20px 24px;
+  color: white;
+  cursor: pointer;
 }
 
 .hero__link:hover,
 .hero__sublink:hover {
   color: black;
   background: white;
+}
+
+.hero__favorite svg {
+  color: #B4A9FF;
 }
 
 .hero__link:focus,

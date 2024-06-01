@@ -1,5 +1,6 @@
 export interface IProduct {
   id: number,
   title: string,
-  posterUrl: string
+  posterUrl: string,
+  tmdbRating: number
 }
