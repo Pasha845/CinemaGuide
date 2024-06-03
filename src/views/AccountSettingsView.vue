@@ -5,7 +5,7 @@
         <div>КК</div>
       </div>
       <div>
-        <p class="account__subtext">Имя Фамилия</p>
+        <p class="account__subtext">Name Surname</p>
         <p class="account__text">Константин Константинопольский</p>
       </div>
     </div>
@@ -16,12 +16,12 @@
         </svg>
       </div>
       <div>
-        <p class="account__subtext">Электронная почта</p>
+        <p class="account__subtext">Email</p>
         <p class="account__text">example@domain.com</p>
       </div>
     </div>
   </div>
-  <router-link class="btn" to="/main">Выйти из аккаунта</router-link>
+  <router-link class="btn" to="/main">Log out of your account</router-link>
 </template>
 
 <script setup lang="ts">

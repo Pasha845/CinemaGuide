@@ -1,12 +1,12 @@
 <template>
   <section class="genre padding">
     <div class="container">
-      <h1 class="genre__title title">Жанры фильмов</h1>
-      <div class="list">
+      <h1 class="title">Movie genres</h1>
+      <div class="genre__list list">
         <GenreCard
           v-for="genre in genres"
           :key="genre.id"
-          genre="genre"
+          :genre="genre"
         />
       </div>
     </div>
@@ -14,29 +14,24 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue'
-import {getGenreFilms} from "@/api/product"
-import GenreCard from "@/components/GenreCard.vue"
-import type { IProduct } from '@/types/product';
+  import {ref} from 'vue'
+  import {getGenreFilms} from "@/api/product"
+  import GenreCard from "@/components/GenreCard.vue"
+  import type { IProduct } from '@/types/product';
 
-const genres = ref<IProduct[]>([])
+  const genres = ref<IProduct[]>([])
 
-const loadGenreFilms = async () => {
-  const response = await getGenreFilms()
-  genres.value = response
-}
+  const loadGenreFilms = async () => {
+    const response = await getGenreFilms()
+    genres.value = response
+  }
 
-loadGenreFilms()
+  console.log(genres)
+
+  loadGenreFilms()
 </script>
 
 <style scoped>
-  .genre__list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 40px;
-    row-gap: 64px;
-  }
-
   .genre__item {
     display: flex;
     flex-direction: column;
@@ -53,15 +48,18 @@ loadGenreFilms()
     border-top-right-radius: 24px;
   }
 
-  .genre__text {
-    text-align: center;
-    border-bottom-left-radius: 24px;
-    border-bottom-right-radius: 24px;
-    padding-top: 22px;
-    padding-bottom: 30px;
-    font-size: 24px;
-    line-height: 32px;
-    font-weight: 700;
-    background: #0A0B0B;
+  @media (max-width: 576px) {
+    .genre {
+      padding-top: 24px;
+      padding-bottom: 40px;
+    }
+
+    .genre__list {
+      gap: 24px;
+    }
+
+    .genre__item {
+      width: 100%;
+    }
   }
 </style>

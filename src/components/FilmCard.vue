@@ -5,9 +5,11 @@
 </template>
 
 <script setup lang="ts">
-import type {IProduct} from "@/types/product";
-import {computed, ref} from "vue"
+  import type { IProduct } from "@/types/product";
 
-const props = defineProps<{ product: IProduct }>()
-
+  const props = defineProps<{ product: IProduct }>()
 </script>
+
+<style scoped>
+
+</style>

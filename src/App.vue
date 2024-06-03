@@ -6,10 +6,10 @@
       </router-link>
       <ul class="header__menu flex">
         <li class="header__margin-link">
-          <router-link class="header__link" to="/main">Главная</router-link>
+          <router-link class="header__link" to="/main">Main</router-link>
         </li>
         <li class="header__margin-link">
-          <router-link class="header__link" to="/genre">Жанры</router-link>
+          <router-link class="header__link" to="/genre">Genres</router-link>
         </li>
         <li class="header__margin-link">
           <label class="header__label">
@@ -18,40 +18,40 @@
                 <path d="M16.031 14.6168L20.3137 18.8995L18.8995 20.3137L14.6168 16.031C13.0769 17.263 11.124 18 9 18C4.032 18 0 13.968 0 9C0 4.032 4.032 0 9 0C13.968 0 18 4.032 18 9C18 11.124 17.263 13.0769 16.031 14.6168ZM14.0247 13.8748C15.2475 12.6146 16 10.8956 16 9C16 5.1325 12.8675 2 9 2C5.1325 2 2 5.1325 2 9C2 12.8675 5.1325 16 9 16C10.8956 16 12.6146 15.2475 13.8748 14.0247L14.0247 13.8748Z" fill="white" fill-opacity="0.5"/>
               </svg>              
             </button>
-            <input class="header__input" type="search" placeholder="Поиск">
+            <input class="header__input" type="search" placeholder="Search">
           </label>
         </li>
       </ul>
-      <router-link class="header__link" to="/account">Войти</router-link>
+      <button class="header__link" @click="showModalSign">Sign in</button>
       <ul class="header__cube">
         <li class="header__margin-icon">
-          <router-link class="header__icon" to="/genre" aria-label="Жанры">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M5 9.5C2.51472 9.5 0.5 7.48528 0.5 5C0.5 2.51472 2.51472 0.5 5 0.5C7.48528 0.5 9.5 2.51472 9.5 5C9.5 7.48528 7.48528 9.5 5 9.5ZM5 19.5C2.51472 19.5 0.5 17.4853 0.5 15C0.5 12.5147 2.51472 10.5 5 10.5C7.48528 10.5 9.5 12.5147 9.5 15C9.5 17.4853 7.48528 19.5 5 19.5ZM15 9.5C12.5147 9.5 10.5 7.48528 10.5 5C10.5 2.51472 12.5147 0.5 15 0.5C17.4853 0.5 19.5 2.51472 19.5 5C19.5 7.48528 17.4853 9.5 15 9.5ZM15 19.5C12.5147 19.5 10.5 17.4853 10.5 15C10.5 12.5147 12.5147 10.5 15 10.5C17.4853 10.5 19.5 12.5147 19.5 15C19.5 17.4853 17.4853 19.5 15 19.5ZM5 7.5C6.38071 7.5 7.5 6.38071 7.5 5C7.5 3.61929 6.38071 2.5 5 2.5C3.61929 2.5 2.5 3.61929 2.5 5C2.5 6.38071 3.61929 7.5 5 7.5ZM5 17.5C6.38071 17.5 7.5 16.3807 7.5 15C7.5 13.6193 6.38071 12.5 5 12.5C3.61929 12.5 2.5 13.6193 2.5 15C2.5 16.3807 3.61929 17.5 5 17.5ZM15 7.5C16.3807 7.5 17.5 6.38071 17.5 5C17.5 3.61929 16.3807 2.5 15 2.5C13.6193 2.5 12.5 3.61929 12.5 5C12.5 6.38071 13.6193 7.5 15 7.5ZM15 17.5C16.3807 17.5 17.5 16.3807 17.5 15C17.5 13.6193 16.3807 12.5 15 12.5C13.6193 12.5 12.5 13.6193 12.5 15C12.5 16.3807 13.6193 17.5 15 17.5Z" fill="white"/>
+          <router-link class="header__icon" to="/genre" aria-label="Genres">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 11.5C4.51472 11.5 2.5 9.48528 2.5 7C2.5 4.51472 4.51472 2.5 7 2.5C9.48528 2.5 11.5 4.51472 11.5 7C11.5 9.48528 9.48528 11.5 7 11.5ZM7 21.5C4.51472 21.5 2.5 19.4853 2.5 17C2.5 14.5147 4.51472 12.5 7 12.5C9.48528 12.5 11.5 14.5147 11.5 17C11.5 19.4853 9.48528 21.5 7 21.5ZM17 11.5C14.5147 11.5 12.5 9.48528 12.5 7C12.5 4.51472 14.5147 2.5 17 2.5C19.4853 2.5 21.5 4.51472 21.5 7C21.5 9.48528 19.4853 11.5 17 11.5ZM17 21.5C14.5147 21.5 12.5 19.4853 12.5 17C12.5 14.5147 14.5147 12.5 17 12.5C19.4853 12.5 21.5 14.5147 21.5 17C21.5 19.4853 19.4853 21.5 17 21.5ZM7 9.5C8.38071 9.5 9.5 8.38071 9.5 7C9.5 5.61929 8.38071 4.5 7 4.5C5.61929 4.5 4.5 5.61929 4.5 7C4.5 8.38071 5.61929 9.5 7 9.5ZM7 19.5C8.38071 19.5 9.5 18.3807 9.5 17C9.5 15.6193 8.38071 14.5 7 14.5C5.61929 14.5 4.5 15.6193 4.5 17C4.5 18.3807 5.61929 19.5 7 19.5ZM17 9.5C18.3807 9.5 19.5 8.38071 19.5 7C19.5 5.61929 18.3807 4.5 17 4.5C15.6193 4.5 14.5 5.61929 14.5 7C14.5 8.38071 15.6193 9.5 17 9.5ZM17 19.5C18.3807 19.5 19.5 18.3807 19.5 17C19.5 15.6193 18.3807 14.5 17 14.5C15.6193 14.5 14.5 15.6193 14.5 17C14.5 18.3807 15.6193 19.5 17 19.5Z" fill="white"/>
             </svg>
           </router-link>
         </li>
         <li class="header__margin-icon">
-          <a class="header__icon" href="#" aria-label="Поиск">
-            <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M16.031 14.6168L20.3137 18.8995L18.8995 20.3137L14.6168 16.031C13.0769 17.263 11.124 18 9 18C4.032 18 0 13.968 0 9C0 4.032 4.032 0 9 0C13.968 0 18 4.032 18 9C18 11.124 17.263 13.0769 16.031 14.6168ZM14.0247 13.8748C15.2475 12.6146 16 10.8956 16 9C16 5.1325 12.8675 2 9 2C5.1325 2 2 5.1325 2 9C2 12.8675 5.1325 16 9 16C10.8956 16 12.6146 15.2475 13.8748 14.0247L14.0247 13.8748Z" fill="white"/>
+          <button class="header__icon" aria-label="Search">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z" fill="white"/>
             </svg>
-          </a>
+          </button>
         </li>
         <li class="header__margin-icon">
-          <router-link class="header__icon" to="/account" aria-label="Профиль">
-            <svg width="16" height="21" viewBox="0 0 16 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0 21C0 16.5817 3.58172 13 8 13C12.4183 13 16 16.5817 16 21H14C14 17.6863 11.3137 15 8 15C4.68629 15 2 17.6863 2 21H0ZM8 12C4.685 12 2 9.315 2 6C2 2.685 4.685 0 8 0C11.315 0 14 2.685 14 6C14 9.315 11.315 12 8 12ZM8 10C10.21 10 12 8.21 12 6C12 3.79 10.21 2 8 2C5.79 2 4 3.79 4 6C4 8.21 5.79 10 8 10Z" fill="white"/>
+          <button class="header__icon" @click="showModalSign" aria-label="Profile">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 22C4 17.5817 7.58172 14 12 14C16.4183 14 20 17.5817 20 22H18C18 18.6863 15.3137 16 12 16C8.68629 16 6 18.6863 6 22H4ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13ZM12 11C14.21 11 16 9.21 16 7C16 4.79 14.21 3 12 3C9.79 3 8 4.79 8 7C8 9.21 9.79 11 12 11Z" fill="white"/>
             </svg>
-          </router-link>
+          </button>
         </li>
       </ul>
     </div>
   </header>
 
-  <div class="modal">
+  <div class="modal" v-if="isShowModalSign">
     <div class="modal-container">
-      <button class="modal-exit">
+      <button class="modal-exit" @click="closeModalSign">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M8.5859 10L0.792969 2.20706L2.20718 0.792847L10.0001 8.5857L17.793 0.792847L19.2072 2.20706L11.4143 10L19.2072 17.7928L17.793 19.2071L10.0001 11.4142L2.20718 19.2071L0.792969 17.7928L8.5859 10Z" fill="black"/>
         </svg>
@@ -62,87 +62,93 @@
           <svg width="22" height="18" viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M21 0C21.5523 0 22 0.44772 22 1V17.0066C22 17.5552 21.5447 18 21.0082 18H2.9918C2.44405 18 2 17.5551 2 17.0066V16H20V4.3L12 11.5L2 2.5V1C2 0.44772 2.44772 0 3 0H21ZM8 12V14H0V12H8ZM5 7V9H0V7H5ZM19.5659 2H4.43414L12 8.8093L19.5659 2Z" fill="currentColor"/>
           </svg>
-          <input class="modal-input" type="email" placeholder="Электронная почта" required>
+          <input class="modal-input" type="email" placeholder="Email" required>
         </label>
         <label class="modal-label modal-label-last flex">
           <svg width="22" height="12" viewBox="0 0 22 12" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M11.917 7C11.441 9.8377 8.973 12 6 12C2.68629 12 0 9.3137 0 6C0 2.68629 2.68629 0 6 0C8.973 0 11.441 2.16229 11.917 5H22V7H20V11H18V7H16V11H14V7H11.917ZM6 10C8.20914 10 10 8.2091 10 6C10 3.79086 8.20914 2 6 2C3.79086 2 2 3.79086 2 6C2 8.2091 3.79086 10 6 10Z" fill="currentColor"/>
           </svg>
-          <input class="modal-input" type="password" placeholder="Пароль" required>
+          <input class="modal-input" type="password" placeholder="Password" required>
         </label>
-        <router-link class="btn modal-btn mb-24" type="submit" to="/account">Войти</router-link>
+        <button class="btn modal-btn mb-24" type="submit">Sign in</button>
       </form>
-      <a class="modal-link" href="#">Регистрация</a>
+      <button class="modal-link" @click="showModalRegist">Registration</button>
     </div>
   </div>
 
-  <div class="modal">
+  <div class="modal" v-if="isShowModalRegist">
     <div class="modal-container">
-      <button class="modal-exit">
+      <button class="modal-exit" @click="closeModalRegist">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M8.5859 10L0.792969 2.20706L2.20718 0.792847L10.0001 8.5857L17.793 0.792847L19.2072 2.20706L11.4143 10L19.2072 17.7928L17.793 19.2071L10.0001 11.4142L2.20718 19.2071L0.792969 17.7928L8.5859 10Z" fill="black"/>
         </svg>
       </button>
       <img class="modal-logo" src="/img/logo.svg" alt="Logo" width="180" height="24">
-      <p class="modal-title mb-24">Регистрация</p>
+      <p class="modal-title mb-24">Registration</p>
       <form class="modal-form">
         <label class="modal-label flex">
           <svg width="22" height="18" viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M21 0C21.5523 0 22 0.44772 22 1V17.0066C22 17.5552 21.5447 18 21.0082 18H2.9918C2.44405 18 2 17.5551 2 17.0066V16H20V4.3L12 11.5L2 2.5V1C2 0.44772 2.44772 0 3 0H21ZM8 12V14H0V12H8ZM5 7V9H0V7H5ZM19.5659 2H4.43414L12 8.8093L19.5659 2Z" fill="currentColor"/>
           </svg>
-          <input class="modal-input" type="email" placeholder="Электронная почта" required>
+          <input class="modal-input" type="email" placeholder="Email" required>
         </label>
         <label class="modal-label flex">
-          <svg width="22" height="18" viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M21 0C21.5523 0 22 0.44772 22 1V17.0066C22 17.5552 21.5447 18 21.0082 18H2.9918C2.44405 18 2 17.5551 2 17.0066V16H20V4.3L12 11.5L2 2.5V1C2 0.44772 2.44772 0 3 0H21ZM8 12V14H0V12H8ZM5 7V9H0V7H5ZM19.5659 2H4.43414L12 8.8093L19.5659 2Z" fill="currentColor"/>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 22C4 17.5817 7.58172 14 12 14C16.4183 14 20 17.5817 20 22H18C18 18.6863 15.3137 16 12 16C8.68629 16 6 18.6863 6 22H4ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13ZM12 11C14.21 11 16 9.21 16 7C16 4.79 14.21 3 12 3C9.79 3 8 4.79 8 7C8 9.21 9.79 11 12 11Z" fill="black" fill-opacity="0.4"/>
           </svg>
-          <input class="modal-input" type="text" placeholder="Имя" required>
+          <input class="modal-input" type="text" placeholder="Name" required>
         </label>
         <label class="modal-label flex">
-          <svg width="22" height="18" viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M21 0C21.5523 0 22 0.44772 22 1V17.0066C22 17.5552 21.5447 18 21.0082 18H2.9918C2.44405 18 2 17.5551 2 17.0066V16H20V4.3L12 11.5L2 2.5V1C2 0.44772 2.44772 0 3 0H21ZM8 12V14H0V12H8ZM5 7V9H0V7H5ZM19.5659 2H4.43414L12 8.8093L19.5659 2Z" fill="currentColor"/>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 22C4 17.5817 7.58172 14 12 14C16.4183 14 20 17.5817 20 22H18C18 18.6863 15.3137 16 12 16C8.68629 16 6 18.6863 6 22H4ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13ZM12 11C14.21 11 16 9.21 16 7C16 4.79 14.21 3 12 3C9.79 3 8 4.79 8 7C8 9.21 9.79 11 12 11Z" fill="black" fill-opacity="0.4"/>
           </svg>
-          <input class="modal-input" type="text" placeholder="Фамилия" required>
+          <input class="modal-input" type="text" placeholder="Surname" required>
         </label>
         <label class="modal-label flex">
           <svg width="22" height="12" viewBox="0 0 22 12" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M11.917 7C11.441 9.8377 8.973 12 6 12C2.68629 12 0 9.3137 0 6C0 2.68629 2.68629 0 6 0C8.973 0 11.441 2.16229 11.917 5H22V7H20V11H18V7H16V11H14V7H11.917ZM6 10C8.20914 10 10 8.2091 10 6C10 3.79086 8.20914 2 6 2C3.79086 2 2 3.79086 2 6C2 8.2091 3.79086 10 6 10Z" fill="currentColor"/>
           </svg>
-          <input class="modal-input" type="password" placeholder="Пароль" required>
+          <input class="modal-input" type="password" placeholder="Password" required>
         </label>
         <label class="modal-label modal-label-last flex">
           <svg width="22" height="12" viewBox="0 0 22 12" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M11.917 7C11.441 9.8377 8.973 12 6 12C2.68629 12 0 9.3137 0 6C0 2.68629 2.68629 0 6 0C8.973 0 11.441 2.16229 11.917 5H22V7H20V11H18V7H16V11H14V7H11.917ZM6 10C8.20914 10 10 8.2091 10 6C10 3.79086 8.20914 2 6 2C3.79086 2 2 3.79086 2 6C2 8.2091 3.79086 10 6 10Z" fill="currentColor"/>
           </svg>
-          <input class="modal-input" type="password" placeholder="Подтвердите пароль" required>
+          <input class="modal-input" type="password" placeholder="Confirm password" required>
         </label>
-        <button class="btn modal-btn mb-24" type="submit">Создать аккаунт</button>
+        <button class="btn modal-btn mb-24" @click="showModalCompleted">Create an account</button>
       </form>
-      <a class="modal-link" href="#">У меня есть пароль</a>
+      <button class="modal-link" @click="showModalSign">I have a password</button>
     </div>
   </div>
 
-  <div class="modal">
+  <div class="modal" v-if="isShowModalCompleted">
     <div class="modal-container">
-      <button class="modal-exit">
+      <button class="modal-exit" @click="closeModalCompleted">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M8.5859 10L0.792969 2.20706L2.20718 0.792847L10.0001 8.5857L17.793 0.792847L19.2072 2.20706L11.4143 10L19.2072 17.7928L17.793 19.2071L10.0001 11.4142L2.20718 19.2071L0.792969 17.7928L8.5859 10Z" fill="black"/>
         </svg>
       </button>
       <img class="modal-logo" src="/img/logo.svg" alt="Logo" width="180" height="24">
-      <p class="modal-title mb-24">Регистрация завершена</p>
-      <p class="modal-text mb-24">Используйте вашу электронную почту для входа</p>
-      <a class="btn modal-btn" href="#">Войти</a>
+      <p class="modal-title mb-24">Registration is completed</p>
+      <p class="modal-text mb-24">Use your email to login</p>
+      <button class="btn modal-btn" @click="showModalSign">Sign in</button>
     </div>
   </div>
 
-  <div class="modal">
+  <div class="modal" v-if="isShowModalTrailer">
     <div class="modal-trailer">
-      <button class="modal-exit">
+      <button class="modal-exit" @click="closeModalTrailer">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M8.5859 10L0.792969 2.20706L2.20718 0.792847L10.0001 8.5857L17.793 0.792847L19.2072 2.20706L11.4143 10L19.2072 17.7928L17.793 19.2071L10.0001 11.4142L2.20718 19.2071L0.792969 17.7928L8.5859 10Z" fill="black"/>
         </svg>
       </button>
+      <video width="960" height="540" controls :poster="random.posterUrl">
+        <source :src="random.trailerUrl" type="video/mp4">
+      </video>
+      <div class="modal-trailer-background">
+        <p class="modal-title">{{ random.title }}</p>
+      </div>
     </div>
   </div>
 
@@ -151,12 +157,12 @@
   <footer class="footer">
     <div class="footer__list container flex">
       <div class="footer__copyright flex">
-        <p class="footer__text">LLC «Мультимедиа Визион»</p>
+        <p class="footer__text">LLC «Multimedia Vision»</p>
         <div class="flex">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M14.2877 7.42773C13.413 5.97351 11.8195 5 10 5C7.23999 5 5 7.23999 5 10C5 12.76 7.23999 15 10 15C11.8195 15 13.413 14.0265 14.2877 12.5723L12.5729 11.5442C12.0483 12.4166 11.0927 13 10 13C8.3425 13 7 11.6575 7 10C7 8.3425 8.3425 7 10 7C11.093 7 12.0491 7.58386 12.5735 8.4568L14.2877 7.42773ZM20 10C20 4.47998 15.52 0 10 0C4.47998 0 0 4.47998 0 10C0 15.52 4.47998 20 10 20C15.52 20 20 15.52 20 10ZM2 10C2 5.57996 5.57996 2 10 2C14.42 2 18 5.57996 18 10C18 14.42 14.42 18 10 18C5.57996 18 2 14.42 2 10Z" fill="white" fill-opacity="0.7"/>
           </svg>
-          <p class="footer__subtext">Все права защищены</p>
+          <p class="footer__subtext">All rights reserved</p>
         </div>
       </div>
       <ul class="footer__cube flex">
@@ -195,10 +201,50 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue';
-import { RouterLink } from 'vue-router';
+  import {ref} from 'vue';
+  import { RouterLink } from 'vue-router';
 
-</script>
+  const isShowModalSign = ref(false)
+  const isShowModalRegist = ref(false)
+  const isShowModalCompleted = ref(false)
+  const isShowModalTrailer = ref(false)
+
+  function showModalSign () {
+    isShowModalRegist.value = false
+    isShowModalCompleted.value = false
+    isShowModalSign.value = true
+  }
+  
+  function closeModalSign () {
+    isShowModalSign.value = false
+  }
+
+  function showModalRegist () {
+    isShowModalSign.value = false
+    isShowModalRegist.value = true
+  }
+
+  function closeModalRegist () {
+    isShowModalRegist.value = false
+  }
+
+  function showModalCompleted () {
+    isShowModalRegist.value = false
+    isShowModalCompleted.value = true
+  }
+
+  function closeModalCompleted () {
+    isShowModalCompleted.value = false
+  }
+
+  function showModalTrailer () {
+    isShowModalTrailer.value = true
+  }
+
+  function closeModalTrailer () {
+    isShowModalTrailer.value = false
+  }
+</script> 
 
 <style scoped>
   .header {
@@ -211,6 +257,7 @@ import { RouterLink } from 'vue-router';
   }
 
   .header__logo {
+    display: inline-block;
     flex-shrink: 0;
   }
 
@@ -223,18 +270,24 @@ import { RouterLink } from 'vue-router';
   }
 
   .header__link {
+    border: none;
     padding: 8px 0;
     font-size: 24px;
     line-height: 32px;
+    color: white;
+    background: none;
+    cursor: pointer;
   }
 
   .header__label {
     position: relative;
+    display: block;
+    width: 480px;
   }
 
   .header__btn {
     position: absolute;
-    top: 0;
+    top: 14px;
     left: 18px;
     border: none;
     padding: 0;
@@ -247,7 +300,7 @@ import { RouterLink } from 'vue-router';
     border-radius: 8px;
     padding: 14px 16px;
     padding-left: 52px;
-    width: 492px;
+    width: 100%;
     color: white;
     background: #393B3C;
   }
@@ -286,6 +339,13 @@ import { RouterLink } from 'vue-router';
 
     .header__margin-icon:not(:last-child) {
       margin-right: 20px;
+    }
+
+    .header__icon {
+      border: none;
+      padding: 0;
+      background: none;
+      cursor: pointer;
     }
 
     .header__icon:focus {
