@@ -282,6 +282,10 @@ ul, ol {
   background: white;
 }
 
+.modal-regist {
+  padding: 30px 40px;
+}
+
 .modal-trailer {
   position: relative;
   border: 1px solid #FFFFFF80;
@@ -552,7 +556,8 @@ ul, ol {
 }
 
 .hero__link,
-.hero__sublink {
+.hero__sublink,
+.hero__new {
   display: inline-block;
   border: 1px solid #00000066;
   background: #393B3C;
@@ -562,20 +567,25 @@ ul, ol {
   transition: color .3s, background-color .3s;
 }
 
-.hero__sublink {
-  padding: 20px 24px;
+.hero__sublink,
+.hero__new {
+  padding: 18px 22px;
   color: white;
   cursor: pointer;
 }
 
 .hero__link:hover,
-.hero__sublink:hover {
+.hero__sublink:hover,
+.hero__new:hover:not(.hero__favorite) {
   color: black;
   background: white;
 }
 
-.hero__favorite svg {
+.hero__favorite {
   color: #B4A9FF;
+  background-image: url("../img/favorite.svg");
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .hero__link:focus,
