@@ -9,6 +9,10 @@ const router = createRouter({
       component: () => import('@/views/MainView.vue')
     },
     {
+      path: '/',
+      redirect: { name: 'main' }
+    },
+    {
       name: 'genre',
       path: '/genre',
       component: () => import('@/views/GenreView.vue')
@@ -20,7 +24,7 @@ const router = createRouter({
     },
     {
       name: 'film',
-      path: '/film',
+      path: '/film/:id',
       component: () => import('@/views/FilmView.vue')
     },
     {

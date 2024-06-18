@@ -394,6 +394,11 @@ ul, ol {
   cursor: pointer;
 }
 
+.modal-trailer video {
+  width: 100%;
+  height: 100%;
+}
+
 .modal-video {
   position: absolute;
   top: 50%;
@@ -409,6 +414,7 @@ ul, ol {
 }
 
 .modal-trailer-background {
+  display: none;
   position: absolute;
   left: 19px;
   bottom: 23px;
@@ -645,5 +651,10 @@ ul, ol {
   .hero__btn {
     text-align: center;
     width: 100%;
+  }
+
+  .hero__mobile-btn {
+    padding: 16px 88px;
+    width: auto;
   }
 }

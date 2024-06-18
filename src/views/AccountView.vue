@@ -2,7 +2,7 @@
   <section class="account padding">
     <div class="container">
       <h1 class="title">My account</h1>
-      <ul class="flex mb-64">
+      <ul class="account__list flex mb-64">
         <li class="account__margin-link">
           <router-link class="link flex" to="/account/favorites">
             <svg class="account__svg" width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -36,5 +36,24 @@
 
   .account__svg {
     margin-right: 10px;
+  }
+
+  @media (max-width: 576px) {
+    .account {
+      padding-top: 24px;
+      padding-bottom: 68px;
+    }
+
+    .account__list {
+      margin-bottom: 40px;
+    }
+    
+    .account__margin-link:not(:last-child) {
+      margin-right: 24px;
+    }
+
+    .account__svg {
+      margin-right: 8px;
+    }
   }
 </style>

@@ -60,4 +60,23 @@
     line-height: 32px;
     font-weight: 700;
   }
+
+  @media (max-width: 576px) {
+    .account__icon {
+      width: 48px;
+      height: 48px;
+    }
+
+    .account__subtext {
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 400;
+      opacity: .5;
+    }
+
+    .account__text {
+      font-size: 18px;
+      line-height: 24px;
+    }
+  }
 </style>
