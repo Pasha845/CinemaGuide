@@ -9,6 +9,10 @@ const router = createRouter({
       component: () => import('@/views/MainView.vue')
     },
     {
+      path: '/',
+      redirect: { name: 'main' }
+    },
+    {
       name: 'genre',
       path: '/genre',
       component: () => import('@/views/GenreView.vue')
@@ -20,13 +24,25 @@ const router = createRouter({
     },
     {
       name: 'film',
-      path: '/film',
+      path: '/film/:id',
       component: () => import('@/views/FilmView.vue')
     },
     {
       name: 'account',
       path: '/account',
-      component: () => import('@/views/AccountView.vue')
+      component: () => import('@/views/AccountView.vue'),
+      children: [
+        {
+          name: 'favorites',
+          path: '/account/favorites',
+          component: () => import('@/views/AccountFavoritesView.vue')
+        },
+        {
+          name: 'settings',
+          path: '/account/settings',
+          component: () => import('@/views/AccountSettingsView.vue')
+        }
+      ]
     }
   ]
 })
