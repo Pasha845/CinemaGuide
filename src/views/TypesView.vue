@@ -5,20 +5,39 @@
         <svg width="14" height="22" viewBox="0 0 14 22" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M5.04701 11.0012L13.2967 19.2507L10.9397 21.6077L0.333008 11.0012L10.9397 0.394531L13.2967 2.75155L5.04701 11.0012Z" fill="white"/>
         </svg>
-        Fantastic
+        {{ genre }}
       </h1>
-      <ul class="list mb-64">
-        <router-link class="item" to="/film">
-          <img src="" alt="Films image" width="224" height="336">
-        </router-link>
-      </ul>
+
+      <div class="films__list list mb-64">
+        <GenreFilmCard
+          v-for="film in films"
+          :key="film.id"
+          :film="film"
+        />
+      </div>
       <button class="btn">Show more</button>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
+  import { ref } from 'vue'
+  import { getGenreFilms } from "../api/product";
+  import type { IGenreFilms } from '../types/product';
+  import GenreFilmCard from "@/components/GenreFilmCard.vue";
 
+  const films = ref<IGenreFilms[]>([]);
+
+  defineProps<{
+    genre: string
+  }>();
+
+  const loadGenreFilms = async () => {
+    const response = await getGenreFilms()
+    films.value = response
+  }
+
+  loadGenreFilms();
 </script>
 
 <style scoped>

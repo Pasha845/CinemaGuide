@@ -394,12 +394,16 @@ ul, ol {
   cursor: pointer;
 }
 
-.modal-trailer video {
+.modal-video {
   width: 100%;
   height: 100%;
 }
 
-.modal-video {
+.modal-video:hover + .modal-trailer-background {
+  display: block;
+}
+
+.modal- {
   position: absolute;
   top: 50%;
   left: 50%;

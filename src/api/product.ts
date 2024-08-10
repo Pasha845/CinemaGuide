@@ -1,12 +1,12 @@
-import type { IRandomFilm, IProduct, IFilm, IGenre } from "@/types/product"
+import type { IRandomFilm, IProduct, IFilm, IGenre, IGenreFilms } from "@/types/product";
 
 export const getRandomFilm = async (): Promise<IRandomFilm[]> => {
   try {
     const fetchResponse = await fetch('https://cinemaguide.skillbox.cc/movie/random');
     const response = await fetchResponse.json();
-    const random: IRandomFilm[] = response;
+    const randoms: IRandomFilm[] = response;
 
-    return random;
+    return randoms;
   } catch(err) {
     throw new Error('Random films response was not ok');
   }
@@ -26,7 +26,7 @@ export const getTopFilms = async (): Promise<IProduct[]> => {
 
 export const getFilm = async (): Promise<IFilm[]> => {
   try {
-    const filmId = 69454;
+    const filmId = 79;
     const fetchResponse = await fetch(`https://cinemaguide.skillbox.cc/movie/${filmId}`);
     const response = await fetchResponse.json();
     const film: IFilm[] = response;
@@ -37,7 +37,7 @@ export const getFilm = async (): Promise<IFilm[]> => {
   }
 }
 
-export const getGenreFilms = async (): Promise<IGenre[]> => {
+export const getGenres = async (): Promise<IGenre[]> => {
   try {
     const fetchResponse = await fetch('https://cinemaguide.skillbox.cc/movie/genres');
     const response = await fetchResponse.json();
@@ -46,5 +46,17 @@ export const getGenreFilms = async (): Promise<IGenre[]> => {
     return genres;
   } catch(err) {
     throw new Error('Film genres response was not ok');
+  }
+}
+
+export const getGenreFilms = async (): Promise<IGenreFilms[]> => {
+  try {
+    const fetchResponse = await fetch('https://cinemaguide.skillbox.cc/movie?count=10&genre=history');
+    const response = await fetchResponse.json();
+    const films: IGenreFilms[] = response;
+
+    return films;
+  } catch(err) {
+    throw new Error('Films response was not ok');
   }
 }

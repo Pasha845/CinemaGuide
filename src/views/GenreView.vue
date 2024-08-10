@@ -16,14 +16,14 @@
 
 <script setup lang="ts">
   import { ref } from 'vue'
-  import { getGenreFilms } from "@/api/product"
+  import { getGenres } from "@/api/product"
   import GenreCard from "@/components/GenreCard.vue"
   import type { IGenre } from '@/types/product';
 
   const genres = ref<IGenre[]>([])
 
   const loadGenreFilms = async () => {
-    const response = await getGenreFilms()
+    const response = await getGenres()
     genres.value = response
   }
 

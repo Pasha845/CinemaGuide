@@ -1,15 +1,18 @@
 <template>
-  <router-link class="genre__item" to="/types">
+  <router-link class="genre__item" :to="'/types/' + genre" :genre="genre">
     <img class="genre__img" :src="array[index].img" alt="Genre image" width="290" height="220">
-    <p class="genre__text">{{ genre[0].toUpperCase() + genre.slice(1) }}</p>
+    <p class="genre__text">{{ genre }}</p>
   </router-link>
 </template>
 
 <script setup lang="ts">
   import { ref } from 'vue';
-  import type { IGenre } from "@/types/product";
 
-  const props = defineProps<{ genre: IGenre, index: IGenre }>()
+  defineProps<{
+    genre: string,
+    index: number
+  }>();
+  
   const array = ref([
     {
       img: '/img/history.jpg'
@@ -95,6 +98,7 @@
   }
 
   .genre__text {
+    text-transform: capitalize;
     text-align: center;
     border-bottom-left-radius: 24px;
     border-bottom-right-radius: 24px;

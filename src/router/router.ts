@@ -19,7 +19,7 @@ const router = createRouter({
     },
     {
       name: 'types',
-      path: '/types',
+      path: '/types/:id',
       component: () => import('@/views/TypesView.vue')
     },
     {

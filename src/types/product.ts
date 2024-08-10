@@ -1,17 +1,18 @@
 export interface IRandomFilm {
-  title: string,
-  posterUrl: string,
-  trailerUrl: string
-}
-
-export interface IProduct {
+  id: number,
   backdropUrl: string,
   tmdbRating: number,
   releaseYear: number,
   runtime: number,
   title: string,
-  plot: number,
-  id: number
+  plot: string,
+  posterUrl: string,
+  trailerUrl: string
+}
+
+export interface IProduct {
+  id: number,
+  posterUrl: string
 }
 
 export interface IFilm {
@@ -32,5 +33,11 @@ export interface IFilm {
 }
 
 export interface IGenre {
-  
+  id: number,
+  title: string
+}
+
+export interface IGenreFilms {
+  id: number,
+  posterUrl: string
 }
