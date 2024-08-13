@@ -30,7 +30,7 @@
     </div>
   </section>
 
-  <TrailerModal :random="random" :isTrailerModalOpen="isTrailerModalOpen" @close = "isTrailerModalOpen = false" />
+  <TrailerModal :isTrailerModalOpen="isTrailerModalOpen" @close = "isTrailerModalOpen = false" />
   <SignInModal :isSignInModalOpen = "isSignInModalOpen" @close="isSignInModalOpen = false" @open="isSignInModalOpen = true" />
 
   <section class="about">

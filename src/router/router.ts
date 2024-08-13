@@ -5,12 +5,8 @@ const router = createRouter({
   routes: [
     {
       name: 'main',
-      path: '/main',
-      component: () => import('@/views/MainView.vue')
-    },
-    {
       path: '/',
-      redirect: { name: 'main' }
+      component: () => import('@/views/MainView.vue')
     },
     {
       name: 'genre',
@@ -43,6 +39,11 @@ const router = createRouter({
           component: () => import('@/views/AccountSettingsView.vue')
         }
       ]
+    },
+    {
+      name: '404',
+      path: '/:pathMatch(.*)*',
+      component: () => import('@/views/NotFoundView.vue')
     }
   ]
 })

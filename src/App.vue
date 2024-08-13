@@ -1,12 +1,12 @@
 <template>
   <header class="header">
     <div class="header__container container flex">
-      <router-link class="header__logo" to="/main">
+      <router-link class="header__logo" to="/">
         <img src="/img/logo.svg" alt="Logo" width="240" height="32">
       </router-link>
       <ul class="header__menu flex">
         <li class="header__margin-link">
-          <router-link class="header__link" to="/main">Main</router-link>
+          <router-link class="header__link" to="/">Main</router-link>
         </li>
         <li class="header__margin-link">
           <router-link class="header__link" to="/genre">Genres</router-link>
