@@ -1,4 +1,5 @@
-import type { IRandomFilm, IProduct, IFilm, IGenre, IGenreFilms } from "@/types/product";
+import type { IRandomFilm, IProduct, Search, IFilm, IGenre, IGenreFilms } from "@/types/product";
+import { useRoute } from "vue-router";
 
 export const getRandomFilm = async (): Promise<IRandomFilm[]> => {
   try {
@@ -24,9 +25,22 @@ export const getTopFilms = async (): Promise<IProduct[]> => {
   }
 }
 
+export const getSearchFilms = async (): Promise<Search[]> => {
+  try {
+    const fetchResponse = await fetch('https://cinemaguide.skillbox.cc/movie?count=5');
+    const response = await fetchResponse.json();
+    const search: Search[] = response;
+
+    return search;
+  } catch(err) {
+    throw new Error('Top films response was not ok');
+  }
+}
+
 export const getFilm = async (): Promise<IFilm[]> => {
   try {
-    const filmId = 79;
+    const route = useRoute();
+    const filmId = route.params.id;
     const fetchResponse = await fetch(`https://cinemaguide.skillbox.cc/movie/${filmId}`);
     const response = await fetchResponse.json();
     const film: IFilm[] = response;
@@ -51,7 +65,9 @@ export const getGenres = async (): Promise<IGenre[]> => {
 
 export const getGenreFilms = async (): Promise<IGenreFilms[]> => {
   try {
-    const fetchResponse = await fetch('https://cinemaguide.skillbox.cc/movie?count=10&genre=history');
+    const route = useRoute();
+    const genre = route.params.id;
+    const fetchResponse = await fetch(`https://cinemaguide.skillbox.cc/movie?count=10&genre=${genre}`);
     const response = await fetchResponse.json();
     const films: IGenreFilms[] = response;
 

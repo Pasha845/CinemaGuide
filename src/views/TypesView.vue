@@ -22,15 +22,14 @@
 
 <script setup lang="ts">
   import { ref } from 'vue'
+  import { useRoute } from "vue-router";
   import { getGenreFilms } from "../api/product";
   import type { IGenreFilms } from '../types/product';
   import GenreFilmCard from "@/components/GenreFilmCard.vue";
 
   const films = ref<IGenreFilms[]>([]);
-
-  defineProps<{
-    genre: string
-  }>();
+  const route = useRoute();
+  const genre = route.params.id;
 
   const loadGenreFilms = async () => {
     const response = await getGenreFilms()
@@ -45,7 +44,13 @@
     text-align: center;
   }
 
+  .types__title {
+    text-transform: capitalize;
+  }
+  
   .types__title svg {
-    margin-right: 30px;
+    margin-right: 16px;
+    padding: 9.4px 13.3px;
+    padding-right: 13.7px;
   }
 </style>

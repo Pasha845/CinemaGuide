@@ -15,6 +15,11 @@ export interface IProduct {
   posterUrl: string
 }
 
+export interface Search {
+  id: number,
+  title: string
+}
+
 export interface IFilm {
   trailerUrl: string,
   posterUrl: string,

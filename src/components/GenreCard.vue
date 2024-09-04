@@ -88,6 +88,11 @@
     height: 304px;
     background: #616161;
     box-shadow: 0px 0px 80px 0px #FFFFFF54;
+    transition: .8s;
+  }
+
+  .genre__item:hover {
+    transform: scale(1.2);
   }
 
   .genre__img {

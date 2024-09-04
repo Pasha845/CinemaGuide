@@ -1,5 +1,5 @@
 <template>
-  <router-link :class="['item']" to="/film">
+  <router-link :class="['item']" :to="'/film/' + film.id">
     <img :src="film.posterUrl" alt="Films image">
   </router-link>
 </template>

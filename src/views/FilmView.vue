@@ -1,23 +1,23 @@
 <template>
   <section class="hero">
     <div class="hero__container container">
-      <img :src="film.backdropUrl" alt="Film image" width="900" height="680">
+      <img :src="random.backdropUrl" alt="Film image" width="900" height="680">
       <div class="hero__item">
         <div class="hero__wrapper flex">
-          <p class="hero__rating flex" :class="[{'green' : film.tmdbRating >= 7 && film.tmdbRating < 8, 'gray' : film.tmdbRating <= 7 && film.tmdbRating >= 4, 'red' : film.tmdbRating < 4}, 'yellow']">
+          <p class="hero__rating flex" :class="[{'green' : random.tmdbRating >= 7 && random.tmdbRating < 8, 'gray' : random.tmdbRating <= 7 && random.tmdbRating >= 4, 'red' : random.tmdbRating < 4}, 'yellow']">
             <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M8.00105 12.1733L3.29875 14.8054L4.34897 9.51991L0.392578 5.86118L5.74394 5.22669L8.00105 0.333313L10.2581 5.22669L15.6095 5.86118L11.6531 9.51991L12.7033 14.8054L8.00105 12.1733Z" fill="white"/>
             </svg>
-            {{ film.tmdbRating }}
+            {{ random.tmdbRating }}
           </p>
-          <p class="hero__year">{{ film.releaseYear }}</p>
-          <p class="hero__genre" v-for="genre in film.genres" :key="genre.id">{{ genre }}</p>
+          <p class="hero__year">{{ random.releaseYear }}</p>
+          <p class="hero__genre" v-for="genre in random.genres" :key="genre.id">{{ genre }}</p>
           <p class="hero__length">
-            {{ film.runtime > 60 && film.runtime < 120 ? ' 1 h ' + (film.runtime - 60) + ' min' : film.runtime > 120 && film.runtime < 180 ? ' 2 h ' + (film.runtime - 120) + ' min' : film.runtime > 180 ? ' 3 h ' + (film.runtime - 180) + ' min' : film.runtime < 60 + ' min' }} 
+            {{ random.runtime > 60 && random.runtime < 120 ? ' 1 h ' + (random.runtime - 60) + ' min' : random.runtime > 120 && random.runtime < 180 ? ' 2 h ' + (random.runtime - 120) + ' min' : random.runtime > 180 ? ' 3 h ' + (random.runtime - 180) + ' min' : random.runtime < 60 + ' min' }} 
           </p>
         </div>
-        <h1 class="hero__title title">{{ film.title }}</h1>
-        <p class="hero__text">{{ film.plot }}</p>
+        <h1 class="hero__title title">{{ random.title }}</h1>
+        <p class="hero__text">{{ random.plot }}</p>
         <div class="hero__cube flex">
           <button class="hero__btn hero__mobile-btn btn" @click.prevent="isTrailerModalOpen = true">Trailer</button>
           <button class="hero__new" @click.prevent="isSignInModalOpen = true">
@@ -30,30 +30,30 @@
     </div>
   </section>
 
-  <TrailerModal :isTrailerModalOpen="isTrailerModalOpen" @close = "isTrailerModalOpen = false" />
-  <SignInModal :isSignInModalOpen = "isSignInModalOpen" @close="isSignInModalOpen = false" @open="isSignInModalOpen = true" />
+  <TrailerModal :random="random" :isTrailerModalOpen="isTrailerModalOpen" @close="isTrailerModalOpen = false" />
+  <SignInModal :isSignInModalOpen="isSignInModalOpen" @close="isSignInModalOpen = false" @open="isSignInModalOpen = true" />
 
   <section class="about">
     <div class="container">
       <h2 class="about__title mb-64">About the film</h2>
       <ul class="about__cube">
         <li class="about__item">Original language
-          <span class="about__span">{{ film.language == null ? 'unknown' : film.language }}</span>
+          <span class="about__span">{{ random.language == null ? 'unknown' : random.language }}</span>
         </li>
         <li class="about__item">Budget
-          <span class="about__span">{{ film.budget == null ? 'unknown' : film.budget + ' $' }}</span>
+          <span class="about__span">{{ random.budget == null ? 'unknown' : random.budget + ' $' }}</span>
         </li>
         <li class="about__item">Revenue
-          <span class="about__span">{{ film.revenue == null ? 'unknown' : film.revenue + ' $' }}</span>
+          <span class="about__span">{{ random.revenue == null ? 'unknown' : random.revenue + ' $' }}</span>
         </li>
         <li class="about__item">Director
-          <span class="about__span">{{ film.director == null ? 'unknown' : film.director }}</span>
+          <span class="about__span">{{ random.director == null ? 'unknown' : random.director }}</span>
         </li>
         <li class="about__item">Production
-          <span class="about__span">{{ film.production == null ? 'unknown' : film.production }}</span>
+          <span class="about__span">{{ random.production == null ? 'unknown' : random.production }}</span>
         </li>
         <li class="about__item">Awards
-          <span class="about__span">{{ film.awardsSummary == null ? 'unknown' : film.awardsSummary }}</span>
+          <span class="about__span">{{ random.awardsSummary == null ? 'unknown' : random.awardsSummary }}</span>
         </li>
       </ul>
     </div>
@@ -67,14 +67,14 @@
   import TrailerModal from '@/components/TrailerModal.vue';
   import SignInModal from '@/components/SignInModal.vue';
 
-  const film = ref<IFilm[]>([]);
+  const random = ref<IFilm[]>([]);
   const isTrailerModalOpen = ref(false);
   const isSignInModalOpen = ref(false);
   /* const isActive = ref(false); */
 
   const loadFilm = async () => {
     const response = await getFilm()
-    film.value = response
+    random.value = response
   }
 
   /* function favorite () {

@@ -167,7 +167,7 @@ body {
   background: #0A0B0B;
 }
 
-p, h1, h2 {
+p, h1, h2, h3 {
   margin: 0;
 }
 
@@ -244,7 +244,11 @@ ul, ol {
   height: 336px;
   background: #3C3C3C;
   box-shadow: 0px 0px 80px 0px rgba(255, 255, 255, 0.3294117647);
-  transition: border-color .3s;
+  transition: border-color .3s, .8s;
+}
+
+.item:hover {
+  transform: scale(1.2);
 }
 
 .item img {
@@ -355,6 +359,18 @@ ul, ol {
   margin-bottom: 24px;
 }
 
+.modal-input {
+  border: none;
+}
+
+.modal-input::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-input:focus {
+  outline: none;
+}
+
 .modal-label-error,
 .modal-label-error:hover {
   border-color: #FF7575;
@@ -367,18 +383,6 @@ ul, ol {
 
 .modal-label-error input {
   color: rgba(0, 0, 0, .4);
-}
-
-.modal-input {
-  border: none;
-}
-
-.modal-input::placeholder {
-  color: rgba(0, 0, 0, 0.4);
-}
-
-.modal-input:focus {
-  outline: none;
 }
 
 .modal-btn {
@@ -399,11 +403,7 @@ ul, ol {
   height: 100%;
 }
 
-.modal-video:hover + .modal-trailer-background {
-  display: block;
-}
-
-.modal- {
+.modal-trailer-btn {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -418,13 +418,19 @@ ul, ol {
 }
 
 .modal-trailer-background {
-  display: none;
   position: absolute;
   left: 19px;
   bottom: 23px;
   padding: 24px 40px;
   width: calc(100% - 118px);
   background: #0A0B0B80;
+  opacity: 0;
+  transition: .8s;
+}
+
+.modal-video:hover + .modal-trailer-background,
+.modal-trailer-background:hover {
+  opacity: 1;
 }
 
 @media (max-width: 576px) {
