@@ -6,23 +6,29 @@
       </router-link>
       <ul class="header__menu flex">
         <li class="header__margin-link">
-          <router-link class="header__link" to="/">Main</router-link>
+          <router-link class="header__link" :class="{'border-link' : route.name === 'main' || route.name === 'film'}" to="/">Main</router-link>
         </li>
         <li class="header__margin-link">
-          <router-link class="header__link" to="/genre">Genres</router-link>
+          <router-link class="header__link" :class="{'border-link' : route.name === 'genre' || route.name === 'types'}" to="/genre">Genres</router-link>
         </li>
         <li class="header__margin-link">
           <form class="header__form">
-            <button class="header__btn" aria-label="Search">
+            <button class="header__btn" type="button" @click="search" aria-label="search">
               <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M16.031 14.6168L20.3137 18.8995L18.8995 20.3137L14.6168 16.031C13.0769 17.263 11.124 18 9 18C4.032 18 0 13.968 0 9C0 4.032 4.032 0 9 0C13.968 0 18 4.032 18 9C18 11.124 17.263 13.0769 16.031 14.6168ZM14.0247 13.8748C15.2475 12.6146 16 10.8956 16 9C16 5.1325 12.8675 2 9 2C5.1325 2 2 5.1325 2 9C2 12.8675 5.1325 16 9 16C10.8956 16 12.6146 15.2475 13.8748 14.0247L14.0247 13.8748Z" fill="white" fill-opacity="0.5"/>
               </svg>              
             </button>
-            <input class="header__input" type="search" placeholder="Search" @click.prevent="isSearchModalOpen = true">
+            <input class="header__input" type="search" v-model="inputText" placeholder="Search">
+            <button class="header__exit" type="button" @click="exit" v-if="headerExit" aria-label="exit">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6.9997 5.5865L11.9495 0.636719L13.3637 2.05093L8.4139 7.0007L13.3637 11.9504L11.9495 13.3646L6.9997 8.4149L2.04996 13.3646L0.635742 11.9504L5.5855 7.0007L0.635742 2.05093L2.04996 0.636719L6.9997 5.5865Z" fill="white" fill-opacity="0.5"/>
+              </svg>
+            </button>
+            <SearchModal :quest="quest" :isSearchModalOpen="isSearchModalOpen" @click="exit"/>
           </form>
         </li>
       </ul>
-      <button class="header__link header__acount" @click.prevent="isSignInModalOpen = true">Sign in</button>
+      <button class="header__link header__acount" :class="{'border-link' : route.name === 'favorites' || route.name === 'settings'}" @click.prevent="isSignInModalOpen = true">Sign in</button>
       <ul class="header__cube">
         <li class="header__margin-icon">
           <router-link class="header__icon" to="/genre" aria-label="Genres">
@@ -49,7 +55,6 @@
     </div>
   </header>
 
-  <SearchModal :quest="quest" :isSearchModalOpen="isSearchModalOpen" />
   <SignInModal :isSignInModalOpen="isSignInModalOpen" @close="isSignInModalOpen = false" @open="isSignInModalOpen = true" />
 
   <router-view />
@@ -101,8 +106,8 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue';
-  import { RouterLink } from 'vue-router';
+  import { watch, ref } from 'vue';
+  import { useRoute, RouterLink } from 'vue-router';
   import { getSearchFilms } from "@/api/product";
   import type { Search } from '@/types/product';
   import SignInModal from '@/components/SignInModal.vue';
@@ -110,13 +115,39 @@
 
   const quest = ref<Search[]>([]);
 
+  const route = useRoute();
+
+  const inputText = ref('');
+  const headerExit = ref(false);
+  const isSearchModalOpen = ref(false);
+  const isSignInModalOpen = ref(false);
+
+  watch(inputText, () => {
+    if (inputText.value !== '') {
+      headerExit.value = true;
+    } else {
+      headerExit.value = false;
+    };
+  });
+
+  const search = () => {
+    if (inputText.value !== '') {
+      isSearchModalOpen.value = true;
+    } else {
+      isSearchModalOpen.value = false;
+    };
+  };
+
   const loadSearchFilms = async () => {
-    const response = await getSearchFilms();
+    const response = await getSearchFilms(inputText.value);
     quest.value = response;
   };
 
-  const isSearchModalOpen = ref(false);
-  const isSignInModalOpen = ref(false);
+  const exit = () => {
+    inputText.value = '';
+    isSearchModalOpen.value = false;
+    headerExit.value = false;
+  };
 
   loadSearchFilms();
 </script>
@@ -140,18 +171,19 @@
     margin-right: 40px;
   }
 
-  .header__margin-link:first-child .header__link {
-    border-bottom: 1.5px solid #DC5DFC;
-  }
-
   .header__link {
     border: none;
     padding: 8px 0;
+    padding-bottom: 9px;
     font-size: 24px;
     line-height: 32px;
     color: white;
     background: none;
     cursor: pointer;
+  }
+
+  .border-link {
+    border-bottom: 1.5px solid #DC5DFC;
   }
 
   .header__form {
@@ -180,8 +212,14 @@
     background: #393B3C;
   }
 
-  .header__input:focus {
-    outline: none;
+  .header__exit {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    border: none;
+    padding: 0;
+    background: none;
+    cursor: pointer;
   }
 
   .header__input::placeholder {
@@ -193,6 +231,14 @@
     display: none;
   }
 
+  .header__logo:focus,
+  .header__link:focus,
+  .header__btn:focus,
+  .header__input:focus,
+  .header__exit:focus {
+    outline: none;
+  }
+
   @media (max-width: 576px) {
     .header {
       padding: 16px 0;
@@ -200,7 +246,7 @@
 
     .header__logo img {
       width: 136px;
-      height: 18px;
+      height: 25px;
     }
 
     .header__menu,

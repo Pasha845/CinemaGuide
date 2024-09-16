@@ -41,17 +41,25 @@
     display: flex;
     justify-content: flex-start;
     box-sizing: border-box;
+    border: 1px solid #393B3C;
     border-radius: 6px;
-    padding: 20px 8px;
+    padding: 19px 7px;
+    width: 543px;
+    transition: border-color .3s;
   }
 
   .search__item:hover {
-    border: 1px solid #FFFFFF80;
-    padding: 19px 7px;
+    border-color: #FFFFFF80;
+  }
+
+  .search__item:focus {
+    outline: none;
   }
 
   .search__item img {
     margin-right: 16px;
+    width: 40px;
+    height: 52px;
   }
 
   .search__cube {

@@ -14,6 +14,7 @@
   import type { Search } from "../types/product";
   import SearchFilmCard from "@/components/SearchFilmCard.vue";
 
+  defineEmits(['close']);
   defineProps<{
     isSearchModalOpen: Boolean,
     quest: Search
@@ -22,17 +23,21 @@
 
 <style scoped>
   .search__modal {
+    position: absolute;
+    width: auto;
+    height: auto;
     background: none;
   }
 
   .search__container {
-    top: 84px;
+    top: 72px;
+    left: 0;
     text-align: left;
     border-radius: 8px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     padding: 8px;
     background: #393B3C;
-    transform: translate(-50%, 0);
+    transform: translate(0);
   }
 </style>

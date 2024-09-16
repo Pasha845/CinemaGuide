@@ -21,7 +21,7 @@
       </div>
     </div>
   </div>
-  <router-link class="btn" to="/main">Log out of your account</router-link>
+  <router-link class="btn" to="/">Log out of your account</router-link>
 </template>
 
 <script setup lang="ts">

@@ -117,7 +117,8 @@
 
   @media (max-width: 576px) {
     .genre__item {
-      width: 100%;
+      width: 333px;
+      height: 302px;
     }
   }
 </style>

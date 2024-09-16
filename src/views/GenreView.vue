@@ -38,6 +38,7 @@
     }
 
     .genre__list {
+      justify-content: center;
       gap: 24px;
     }
   }

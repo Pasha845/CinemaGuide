@@ -7,12 +7,12 @@
         </svg>
       </button>
       <img class="modal-logo" src="/img/logo.svg" alt="Logo" width="180" height="24">
-      <form class="modal-form">
+      <form class="modal-form" @submit.prevent="signin">
         <label class="modal-label flex">
           <svg width="22" height="18" viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M21 0C21.5523 0 22 0.44772 22 1V17.0066C22 17.5552 21.5447 18 21.0082 18H2.9918C2.44405 18 2 17.5551 2 17.0066V16H20V4.3L12 11.5L2 2.5V1C2 0.44772 2.44772 0 3 0H21ZM8 12V14H0V12H8ZM5 7V9H0V7H5ZM19.5659 2H4.43414L12 8.8093L19.5659 2Z" fill="currentColor"/>
           </svg>
-          <input class="modal-input" id="myInput" type="email" placeholder="Email" required>
+          <input class="modal-input" type="email" placeholder="Email" required>
         </label>
         <label class="modal-label modal-label-last flex">
           <svg width="22" height="12" viewBox="0 0 22 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -20,7 +20,7 @@
           </svg>
           <input class="modal-input" type="password" placeholder="Password" required>
         </label>
-        <button class="btn modal-btn mb-24" type="submit" @click="signBtn">Sign in</button>
+        <button class="btn modal-btn mb-24" type="submit">Sign in</button>
       </form>
       <button class="modal-link" @click.prevent="$emit('close'), isRegModalOpen = true">Registration</button>
     </div>
@@ -89,15 +89,16 @@
 
 <script setup lang="ts">
   import { ref } from 'vue';
+  import { useRouter } from 'vue-router';
 
-  defineEmits(['close', 'open']);
+  const emit = defineEmits(['close', 'open']);
   defineProps({isSignInModalOpen: Boolean});
   const isRegModalOpen = ref(false);
   const isCompleteModalOpen = ref(false);
+  const router = useRouter();
 
-  const jh = ref(false);
-
-  function signBtn () {
-    
-  };
+  const signin = () => {
+    emit('close');
+    router.push({name: 'favorites'});
+  }
 </script>

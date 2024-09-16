@@ -25,9 +25,13 @@ export const getTopFilms = async (): Promise<IProduct[]> => {
   }
 }
 
-export const getSearchFilms = async (): Promise<Search[]> => {
+export const getSearchFilms = async (inputText: string): Promise<Search[]> => {
   try {
-    const fetchResponse = await fetch('https://cinemaguide.skillbox.cc/movie?count=5');
+    const query = new URLSearchParams({
+      count: String(5),
+      title: String(inputText)
+    });
+    const fetchResponse = await fetch(`https://cinemaguide.skillbox.cc/movie?${query}`);
     const response = await fetchResponse.json();
     const search: Search[] = response;
 
@@ -63,11 +67,14 @@ export const getGenres = async (): Promise<IGenre[]> => {
   }
 }
 
-export const getGenreFilms = async (): Promise<IGenreFilms[]> => {
+export const getGenreFilms = async (numberFilms: number): Promise<IGenreFilms[]> => {
   try {
     const route = useRoute();
-    const genre = route.params.id;
-    const fetchResponse = await fetch(`https://cinemaguide.skillbox.cc/movie?count=10&genre=${genre}`);
+    const query = new URLSearchParams({
+      count: String(numberFilms),
+      genre: String(route.params.id)
+    });
+    const fetchResponse = await fetch(`https://cinemaguide.skillbox.cc/movie?${query}`);
     const response = await fetchResponse.json();
     const films: IGenreFilms[] = response;
 

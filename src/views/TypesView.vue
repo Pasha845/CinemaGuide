@@ -8,14 +8,14 @@
         {{ genre }}
       </h1>
 
-      <div class="films__list list mb-64">
+      <div class="films__list types__list list mb-64">
         <GenreFilmCard
           v-for="film in films"
           :key="film.id"
           :film="film"
         />
       </div>
-      <button class="btn">Show more</button>
+      <button class="types__btn btn" @click="showFilms">Show more</button>
     </div>
   </section>
 </template>
@@ -30,10 +30,15 @@
   const films = ref<IGenreFilms[]>([]);
   const route = useRoute();
   const genre = route.params.id;
+  const numberFilms = ref(10);
+
+  const showFilms = () => {
+    numberFilms.value += 10;
+  };
 
   const loadGenreFilms = async () => {
-    const response = await getGenreFilms()
-    films.value = response
+    const response = await getGenreFilms(numberFilms.value);
+    films.value = response;
   }
 
   loadGenreFilms();
@@ -52,5 +57,30 @@
     margin-right: 16px;
     padding: 9.4px 13.3px;
     padding-right: 13.7px;
+  }
+
+  @media (max-width: 576px) {
+    .types {
+      padding-top: 24px;
+      padding-bottom: 40px;
+    }
+
+    .types__title svg {
+      margin-right: 8px;
+      padding: 7.5px 11px;
+      padding-right: 10.6px;
+      width: 10.37px;
+      height: 16.97px;
+    }
+
+    .types__list {
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .types__btn {
+      padding: 18px 92px;
+    }
   }
 </style>
