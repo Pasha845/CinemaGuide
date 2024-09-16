@@ -122,20 +122,12 @@
   const isSearchModalOpen = ref(false);
   const isSignInModalOpen = ref(false);
 
-  watch(inputText, () => {
-    if (inputText.value !== '') {
-      headerExit.value = true;
-    } else {
-      headerExit.value = false;
-    };
+  watch(inputText, (newValue) => {
+    headerExit.value = newValue !== '';
   });
 
   const search = () => {
-    if (inputText.value !== '') {
-      isSearchModalOpen.value = true;
-    } else {
-      isSearchModalOpen.value = false;
-    };
+    isSearchModalOpen.value = inputText.value !== '';
   };
 
   const loadSearchFilms = async () => {
