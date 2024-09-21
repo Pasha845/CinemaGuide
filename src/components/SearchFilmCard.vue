@@ -31,7 +31,7 @@
   import { ref } from 'vue';
 
   defineProps<{
-    search: string,
+    search: object,
     index: number
   }>();
 </script>
@@ -82,6 +82,7 @@
   .search__elem {
     font-size: 14px;
     line-height: 20px;
+    font-weight: 400;
     color: #FFFFFFB2;
   }
 
@@ -91,7 +92,34 @@
 
   .search__title {
     font-size: 18px;
+    line-height: 24px;
     font-weight: 700;
     color: #FFFFFF;
+  }
+
+  @media (max-width: 1024px) {
+    .search__item {
+      width: calc(100% - 14px);
+    }
+  }
+
+  @media (max-width: 576px) {
+    .search__item {
+      flex-direction: column;
+      padding: 0;
+      width: 220px;
+    }
+
+    .search__item img {
+      margin: 0;
+      margin-bottom: 16px;
+      width: 158px;
+      height: 206px;
+    }
+
+    .search__cube {
+      display: flex;
+      flex-wrap: wrap;
+    }
   }
 </style>

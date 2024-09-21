@@ -15,7 +15,7 @@
           :film="film"
         />
       </div>
-      <button class="types__btn btn" @click="showFilms">Show more</button>
+      <button v-if="loadBtn" class="types__btn btn" @click="loadMore">Show more</button>
     </div>
   </section>
 </template>
@@ -31,15 +31,20 @@
   const route = useRoute();
   const genre = route.params.id;
   const numberFilms = ref(10);
-
-  const showFilms = () => {
-    numberFilms.value += 10;
-  };
+  const loadBtn = ref(true);
 
   const loadGenreFilms = async () => {
-    const response = await getGenreFilms(numberFilms.value);
+    if (numberFilms.value === 50 ) {
+      loadBtn.value = false;
+    }
+    const response = await getGenreFilms(genre, numberFilms.value);
     films.value = response;
-  }
+  };
+
+  const loadMore = () => {
+    numberFilms.value += 10;
+    loadGenreFilms();
+  };
 
   loadGenreFilms();
 </script>

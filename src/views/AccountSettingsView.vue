@@ -17,15 +17,22 @@
       </div>
       <div>
         <p class="account__subtext">Email</p>
-        <p class="account__text">example@domain.com</p>
+        <p class="account__text">{{ authStore.profile }}example@domain.com</p>
       </div>
     </div>
   </div>
-  <router-link class="btn" to="/">Log out of your account</router-link>
+  <router-link class="btn" @click="authStore.loginOut" to="/">Log out of your account</router-link>
 </template>
 
 <script setup lang="ts">
+  import { onMounted } from 'vue';
+  import { useAuthStore } from '@/stores/auth';
 
+  const authStore = useAuthStore();
+
+  onMounted(() => {
+    authStore.Profile()
+  });
 </script>
 
 <style scoped>

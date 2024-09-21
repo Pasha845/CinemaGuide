@@ -16,3 +16,39 @@
     filmIsLoading.value = false;
   };
 </script>
+
+<style scoped>
+  .films__item {
+    position: relative;
+    display: inline-block;
+  }
+
+  .films__item:before {
+    content: counter(num);
+    counter-increment: num;
+    position: absolute;
+    top: -12px;
+    left: -12px;
+    z-index: 5;
+    border-radius: 50px;
+    padding: 8px 24px;
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 700;
+    color: #6A5DC2;
+    background: white;
+  }
+
+  @media (max-width: 576px) {
+    .films__item {
+      padding: 167px 111px;
+      height: 0;
+    }
+
+    .films__item img {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
+</style>

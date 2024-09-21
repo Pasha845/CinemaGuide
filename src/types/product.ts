@@ -17,7 +17,10 @@ export interface IProduct {
 
 export interface Search {
   id: number,
-  title: string
+  title: string,
+  originalTitle: string;
+  language: string;
+  releaseYear: number;
 }
 
 export interface IFilm {

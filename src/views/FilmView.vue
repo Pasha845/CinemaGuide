@@ -66,20 +66,15 @@
   import type { IFilm } from '@/types/product';
   import TrailerModal from '@/components/TrailerModal.vue';
   import SignInModal from '@/components/SignInModal.vue';
-
+  
   const random = ref<IFilm[]>([]);
   const isTrailerModalOpen = ref(false);
   const isSignInModalOpen = ref(false);
-  /* const isActive = ref(false); */
 
   const loadFilm = async () => {
     const response = await getFilm()
     random.value = response
   }
-
-  /* function favorite () {
-    isActive.value = !isActive.value;
-  } */
 
   loadFilm()
 </script>

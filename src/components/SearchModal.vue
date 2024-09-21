@@ -2,9 +2,10 @@
   <div class="search__modal modal" v-if="isSearchModalOpen">
     <div class="search__container modal-container">
       <SearchFilmCard
-        v-for="search in quest"
+        v-for="(search, index) in quest"
         :key="search.id"
         :search="search"
+        :index="index"
       />
     </div>
   </div>
@@ -39,5 +40,17 @@
     padding: 8px;
     background: #393B3C;
     transform: translate(0);
+  }
+
+  @media (max-width: 576px) {
+    .search__container {
+      display: flex;
+      white-space: nowrap;
+      overflow-x: auto;
+      top: 64px;
+      border-radius: 8px;
+      padding: 24px 20px;
+      width: 295px;
+    }
   }
 </style>

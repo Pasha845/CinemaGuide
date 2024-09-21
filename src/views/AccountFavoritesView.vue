@@ -1,5 +1,5 @@
 <template>
-  <ul class="list">
+  <ul class="account__list list">
     <li class="account__item item" to="/film">
       <button class="account__exit">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -16,6 +16,10 @@
 </script>
 
 <style scoped>
+  .account__list {
+    justify-content: flex-start;
+  }
+
   .account__exit {
     display: none;
     border: none;

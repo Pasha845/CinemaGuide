@@ -41,7 +41,7 @@
   <SignInModal :isSignInModalOpen = "isSignInModalOpen" @close="isSignInModalOpen = false" @open="isSignInModalOpen = true" />
 
   <section class="films">
-    <div class="container">
+    <div class="films__container container">
       <h2 class="films__title">Top 10 films</h2>
       <div class="films__list list">
         <FilmCard
@@ -124,35 +124,32 @@
     counter-reset: num;
   }
 
-  .films__item:before {
-    content: counter(num);
-    counter-increment: num;
-    display: inline-block;
-    position: absolute;
-    top: -12px;
-    left: -12px;
-    border-radius: 50px;
-    padding: 8px 24px;
-    font-size: 24px;
-    line-height: 32px;
-    font-weight: 700;
-    color: #6A5DC2;
-    background: white;
-  }
-
   @media (max-width: 576px) {
     .films {
       padding: 32px 0;
     }
 
+    .films__container {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
     .films__title {
-      margin-bottom: 40px;
+      margin-bottom: 0;
+      padding-left: 20px;
+      padding-right: 20px;
       font-size: 24px;
       line-height: 32px;
     }
 
     .films__list {
-      row-gap: 40px;
+      justify-content: flex-start;
+      flex-wrap: nowrap;
+      white-space: nowrap;
+      overflow-x: scroll;
+      gap: 28px;
+      padding: 32px 20px;
+      padding-top: 40px;
     }
   }
 </style>

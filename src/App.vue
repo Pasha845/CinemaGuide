@@ -12,11 +12,11 @@
           <router-link class="header__link" :class="{'border-link' : route.name === 'genre' || route.name === 'types'}" to="/genre">Genres</router-link>
         </li>
         <li class="header__margin-link">
-          <form class="header__form">
-            <button class="header__btn" type="button" @click="search" aria-label="search">
+          <form class="header__form" v-if="isMobile" @submit.prevent="findModule">
+            <button class="header__btn" type="submit" aria-label="search">
               <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M16.031 14.6168L20.3137 18.8995L18.8995 20.3137L14.6168 16.031C13.0769 17.263 11.124 18 9 18C4.032 18 0 13.968 0 9C0 4.032 4.032 0 9 0C13.968 0 18 4.032 18 9C18 11.124 17.263 13.0769 16.031 14.6168ZM14.0247 13.8748C15.2475 12.6146 16 10.8956 16 9C16 5.1325 12.8675 2 9 2C5.1325 2 2 5.1325 2 9C2 12.8675 5.1325 16 9 16C10.8956 16 12.6146 15.2475 13.8748 14.0247L14.0247 13.8748Z" fill="white" fill-opacity="0.5"/>
-              </svg>              
+              </svg>
             </button>
             <input class="header__input" type="search" v-model="inputText" placeholder="Search">
             <button class="header__exit" type="button" @click="exit" v-if="headerExit" aria-label="exit">
@@ -28,7 +28,7 @@
           </form>
         </li>
       </ul>
-      <button class="header__link header__acount" :class="{'border-link' : route.name === 'favorites' || route.name === 'settings'}" @click.prevent="isSignInModalOpen = true">Sign in</button>
+      <button class="header__link header__acount" :class="{'border-link' : route.name === 'favorites' || route.name === 'settings'}" @click.prevent="isSignInModalOpen = true">Log in</button>
       <ul class="header__cube">
         <li class="header__margin-icon">
           <router-link class="header__icon" to="/genre" aria-label="Genres">
@@ -37,8 +37,8 @@
             </svg>
           </router-link>
         </li>
-        <li class="header__margin-icon">
-          <button class="header__icon" aria-label="Search">
+        <li class="header__margin-icon header__search">
+          <button class="header__icon" @click.prevent="isMobile = true" aria-label="Search">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z" fill="white"/>
             </svg>
@@ -106,7 +106,7 @@
 </template>
 
 <script setup lang="ts">
-  import { watch, ref } from 'vue';
+  import { ref, watch } from 'vue';
   import { useRoute, RouterLink } from 'vue-router';
   import { getSearchFilms } from "@/api/product";
   import type { Search } from '@/types/product';
@@ -114,25 +114,30 @@
   import SearchModal from '@/components/SearchModal.vue';
 
   const quest = ref<Search[]>([]);
-
   const route = useRoute();
-
   const inputText = ref('');
   const headerExit = ref(false);
+  const isMobile = ref(true);
   const isSearchModalOpen = ref(false);
   const isSignInModalOpen = ref(false);
 
   watch(inputText, (newValue) => {
     headerExit.value = newValue !== '';
+    
+    if (newValue === '') {
+      isSearchModalOpen.value = false;
+    }
+
+    const loadSearchFilms = async () => {
+      const response = await getSearchFilms(inputText.value);
+      quest.value = response;
+    };
+
+    loadSearchFilms();
   });
 
-  const search = () => {
+  const findModule = () => {
     isSearchModalOpen.value = inputText.value !== '';
-  };
-
-  const loadSearchFilms = async () => {
-    const response = await getSearchFilms(inputText.value);
-    quest.value = response;
   };
 
   const exit = () => {
@@ -140,8 +145,6 @@
     isSearchModalOpen.value = false;
     headerExit.value = false;
   };
-
-  loadSearchFilms();
 </script>
 
 <style scoped>
@@ -154,7 +157,8 @@
     justify-content: space-between;
   }
 
-  .header__logo {
+  .header__logo,
+  .header__icon {
     display: inline-block;
     flex-shrink: 0;
   }
@@ -181,7 +185,10 @@
   .header__form {
     position: relative;
     display: block;
-    width: 559px;
+    border-radius: 8px;
+    padding: 12px 52px;
+    width: 455px;
+    background: #393B3C;
   }
 
   .header__btn {
@@ -196,10 +203,7 @@
 
   .header__input {
     border: none;
-    border-radius: 8px;
-    padding: 14px 16px;
-    padding-left: 52px;
-    width: 491px;
+    width: 100%;
     color: white;
     background: #393B3C;
   }
@@ -227,21 +231,12 @@
   .header__link:focus,
   .header__btn:focus,
   .header__input:focus,
-  .header__exit:focus {
+  .header__exit:focus,
+  .header__icon:focus {
     outline: none;
   }
 
-  @media (max-width: 576px) {
-    .header {
-      padding: 16px 0;
-    }
-
-    .header__logo img {
-      width: 136px;
-      height: 25px;
-    }
-
-    .header__menu,
+  @media (max-width: 1024px) {
     .header__link {
       display: none;
     }
@@ -260,9 +255,34 @@
       background: none;
       cursor: pointer;
     }
+  }
 
-    .header__icon:focus {
-      outline: none;
+  @media (max-width: 768px) {
+    .header__btn {
+      top: 18px;
+    }
+
+    .header__form {
+      position: absolute;
+      top: 16px;
+      left: 20px;
+      padding: 16px 52px;
+      width: calc(100% - 144px);
+    }
+
+    .header__exit {
+      top: 14px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .header {
+      padding: 16px 0;
+    }
+
+    .header__logo img {
+      width: 136px;
+      height: 25px;
     }
   }
   
@@ -294,6 +314,11 @@
   .footer__margin-link:not(:last-child) {
     margin-right: 24px;
   }
+  
+  .footer__margin-link {
+    width: 36px;
+    height: 36px;
+  }
 
   .footer__link {
     position: relative;
@@ -305,6 +330,8 @@
   }
 
   .footer__link svg {
+    display: inline-block;
+    flex-shrink: 0;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -344,10 +371,31 @@
     .footer__cube {
       margin-bottom: 12px;
     }
-
-    .footer__link {
+    
+    .footer__margin-link {
       width: 24px;
       height: 24px;
+    }
+
+    .footer__link {
+      width: 22px;
+      height: 22px;
+    }
+
+    .footer__margin-link:first-child .footer__link svg {
+      width: 12px;
+    }
+
+    .footer__margin-link:nth-child(2) .footer__link svg {
+      width: 10px;
+    }
+
+    .footer__margin-link:nth-child(3) .footer__link svg {
+      width: 7px;
+    }
+
+    .footer__margin-link:nth-child(4) .footer__link svg {
+      width: 11px;
     }
   }
 </style>

@@ -67,12 +67,11 @@ export const getGenres = async (): Promise<IGenre[]> => {
   }
 }
 
-export const getGenreFilms = async (numberFilms: number): Promise<IGenreFilms[]> => {
+export const getGenreFilms = async (genre: string, numberFilms: number): Promise<IGenreFilms[]> => {
   try {
-    const route = useRoute();
     const query = new URLSearchParams({
       count: String(numberFilms),
-      genre: String(route.params.id)
+      genre: genre
     });
     const fetchResponse = await fetch(`https://cinemaguide.skillbox.cc/movie?${query}`);
     const response = await fetchResponse.json();
