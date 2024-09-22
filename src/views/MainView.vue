@@ -61,12 +61,14 @@
   import FilmCard from "@/components/FilmCard.vue";
   import TrailerModal from '@/components/TrailerModal.vue';
   import SignInModal from '@/components/SignInModal.vue';
+  import { useAuthStore } from '@/stores/auth';
 
   const random = ref<IRandomFilm[]>([]);
   const products = ref<IProduct[]>([]);
   const cardIsLoading = ref(false);
   const isTrailerModalOpen = ref(false);
   const isSignInModalOpen = ref(false);
+  const authStore = useAuthStore();
   /* const isActive = ref(false); */
 
   const loadRandomFilms = async () => {

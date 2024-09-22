@@ -7,6 +7,7 @@ export interface Profile {
 }
 
 export const useAuthStore = defineStore('auth', () => {
+  const isAuth = ref(false);
   const profile = ref<Profile[]>([]);
 
   async function SignUp(signEmail: string, signPass: string, signName: string, signSurname: string) {
@@ -21,6 +22,8 @@ export const useAuthStore = defineStore('auth', () => {
           name: 'Pasha',
           surname: 'Gorulev'
         */
+      }, {
+        withCredentials: true
       });
     } catch (error) {
       throw new Error('Error sign up');
@@ -32,8 +35,10 @@ export const useAuthStore = defineStore('auth', () => {
       await axios.post('https://cinemaguide.skillbox.cc/auth/login', {
         email: logEmail,
         password: logPass
+      }, {
+        withCredentials: true
       });
-      console.log('Email: ' + logEmail + ', Pass: ' + logPass);
+      isAuth.value = true;
     } catch (error) {
       throw new Error('Error log in');
     };
@@ -57,5 +62,5 @@ export const useAuthStore = defineStore('auth', () => {
     };
   };
 
-  return {SignUp, LogIn, Profile, profile, LoginOut};
+  return {SignUp, LogIn, isAuth, Profile, profile, LoginOut};
 });

@@ -2,11 +2,11 @@
   <div class="mb-64">
     <div class="account__item flex">
       <div class="account__icon">
-        <div>КК</div>
+        <div>{{ authStore.profile }}</div>
       </div>
       <div>
         <p class="account__subtext">Name Surname</p>
-        <p class="account__text">Константин Константинопольский</p>
+        <p class="account__text">{{ authStore.profile }}</p>
       </div>
     </div>
     <div class="account__item flex">
@@ -17,11 +17,11 @@
       </div>
       <div>
         <p class="account__subtext">Email</p>
-        <p class="account__text">{{ authStore.profile }}example@domain.com</p>
+        <p class="account__text">{{ authStore.profile }}</p>
       </div>
     </div>
   </div>
-  <router-link class="btn" @click="authStore.loginOut" to="/">Log out of your account</router-link>
+  <router-link class="btn" @click="authStore.LoginOut" to="/">Log out of your account</router-link>
 </template>
 
 <script setup lang="ts">

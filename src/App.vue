@@ -120,6 +120,15 @@
   const isMobile = ref(true);
   const isSearchModalOpen = ref(false);
   const isSignInModalOpen = ref(false);
+  const windowWidth = ref(window.innerWidth);
+
+  const handleResize = () => {
+    windowWidth.value = window.innerWidth;
+  };
+
+  if (windowWidth.value < 576) {
+    isMobile.value = false;
+  }
 
   watch(inputText, (newValue) => {
     headerExit.value = newValue !== '';
