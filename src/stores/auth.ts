@@ -2,51 +2,52 @@ import { ref } from 'vue';
 import axios from 'axios';
 import { defineStore } from 'pinia';
 
-export interface Profile {
+export interface GetProfile {
 
-}
+};
+
+export interface GetFavorites {
+
+};
 
 export const useAuthStore = defineStore('auth', () => {
-  const isAuth = ref(false);
-  const profile = ref<Profile[]>([]);
+  const isAuth = ref(!!localStorage.getItem('isAuth'));
+  const profile = ref<GetProfile[]>([]);
+  const fav = ref<GetFavorites[]>([]);
 
-  async function SignUp(signEmail: string, signPass: string, signName: string, signSurname: string) {
+  async function SignUp(signInEmail: string, signInPass: string, signInName: string, signInSurname: string) {
     try {
       await axios.post('https://cinemaguide.skillbox.cc/user', {
-        email: signEmail,
-        password: signPass,
-        name: signName,
-        surname: signSurname
-        /* email: 'pasha.gorulev@gmail.com',
-          password: '1212121212',
-          name: 'Pasha',
-          surname: 'Gorulev'
-        */
+        email: signInEmail,
+        password: signInPass,
+        name: signInName,
+        surname: signInSurname
       }, {
         withCredentials: true
       });
     } catch (error) {
-      throw new Error('Error sign up');
+      throw new Error('Sign up error');
     };
   };
 
-  async function LogIn(logEmail: string, logPass: string) {
+  async function LogIn(logInEmail: string, logInPass: string) {
     try {
       await axios.post('https://cinemaguide.skillbox.cc/auth/login', {
-        email: logEmail,
-        password: logPass
+        email: logInEmail,
+        password: logInPass
       }, {
         withCredentials: true
       });
       isAuth.value = true;
+      localStorage.setItem('isAuth', 'true');
     } catch (error) {
-      throw new Error('Error log in');
+      throw new Error('Log in error');
     };
   };
 
-  async function Profile() {
+  async function GetProfile() {
     try {
-      const data = await fetch('https://cinemaguide.skillbox.cc/profile');
+      const data = await fetch('https://cinemaguide.skillbox.cc/profile', {credentials: 'include'});
       const response = await data.json();
       profile.value = response;
     } catch(error) {
@@ -54,13 +55,47 @@ export const useAuthStore = defineStore('auth', () => {
     };
   };
 
-  async function LoginOut() {
+  async function EddFavorites(filmId: number) {
     try {
-      await fetch('https://cinemaguide.skillbox.cc/auth/logout');
-    } catch(error) {
-      throw new Error('Error logout');
+      await axios.post('https://cinemaguide.skillbox.cc/favorites', {id: filmId},
+      {
+        withCredentials: true
+      });
+    } catch (error) {
+      throw new Error('Error adding film to favorites');
     };
   };
 
-  return {SignUp, LogIn, isAuth, Profile, profile, LoginOut};
+  async function GetFavorites() {
+    try {
+      const data = await fetch('https://cinemaguide.skillbox.cc/favorites', {credentials: 'include'});
+      const response = await data.json();
+      fav.value = response;
+    } catch(error) {
+      throw new Error('Error loading films from favorites');
+    };
+  };
+
+  async function DeleteFavorites(deleteFilm: number) {
+    try {
+      await axios.post('https://cinemaguide.skillbox.cc/favorites', {id: deleteFilm},
+      {
+        withCredentials: true
+      });
+    } catch (error) {
+      throw new Error('Error removing film from favorites');
+    };
+  };
+
+  async function LoginOut() {
+    try {
+      await fetch('https://cinemaguide.skillbox.cc/auth/logout', {credentials: 'include'});
+      isAuth.value = false;
+      localStorage.removeItem('isAuth');
+    } catch(error) {
+      throw new Error('Unlogout error');
+    };
+  };
+
+  return {SignUp, LogIn, isAuth, GetProfile, profile, EddFavorites, GetFavorites, fav, DeleteFavorites, LoginOut};
 });

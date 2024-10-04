@@ -28,7 +28,7 @@
           </form>
         </li>
       </ul>
-      <button class="header__link header__acount" :class="{'border-link' : route.name === 'favorites' || route.name === 'settings'}" @click.prevent="isSignInModalOpen = true">Log in</button>
+      <button class="header__link header__acount" :class="{'border-link' : route.name === 'favorites' || route.name === 'settings'}" @click="login">{{ authStore.isAuth ? data : 'Log in'}}</button>
       <ul class="header__cube">
         <li class="header__margin-icon">
           <router-link class="header__icon" to="/genre" aria-label="Genres">
@@ -45,7 +45,7 @@
           </button>
         </li>
         <li class="header__margin-icon">
-          <button class="header__icon" @click.prevent="isSignInModalOpen = true" aria-label="Profile">
+          <button class="header__icon" @click.prevent="isLoginInModalOpen = true" aria-label="Profile">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M4 22C4 17.5817 7.58172 14 12 14C16.4183 14 20 17.5817 20 22H18C18 18.6863 15.3137 16 12 16C8.68629 16 6 18.6863 6 22H4ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13ZM12 11C14.21 11 16 9.21 16 7C16 4.79 14.21 3 12 3C9.79 3 8 4.79 8 7C8 9.21 9.79 11 12 11Z" fill="white"/>
             </svg>
@@ -55,7 +55,7 @@
     </div>
   </header>
 
-  <SignInModal :isSignInModalOpen="isSignInModalOpen" @close="isSignInModalOpen = false" @open="isSignInModalOpen = true" />
+  <LogInModal :isLogInModalOpen="isLogInModalOpen" @close="isLogInModalOpen = false" @open="isLogInModalOpen = true" />
 
   <router-view />
 
@@ -106,21 +106,32 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, watch } from 'vue';
+  import { ref, watch, onMounted, computed } from 'vue';
   import { useRoute, RouterLink } from 'vue-router';
   import { getSearchFilms } from "@/api/product";
   import type { Search } from '@/types/product';
-  import SignInModal from '@/components/SignInModal.vue';
+  import LogInModal from '@/components/LogInModal.vue';
   import SearchModal from '@/components/SearchModal.vue';
+  import { useAuthStore } from '@/stores/auth';
+  import { useRouter } from 'vue-router';
 
+  const authStore = useAuthStore();
   const quest = ref<Search[]>([]);
   const route = useRoute();
   const inputText = ref('');
   const headerExit = ref(false);
   const isMobile = ref(true);
   const isSearchModalOpen = ref(false);
-  const isSignInModalOpen = ref(false);
+  const isLogInModalOpen = ref(false);
   const windowWidth = ref(window.innerWidth);
+  const data = computed(() => authStore.profile.surname);
+  const router = useRouter();
+
+  watch(quest, () => {
+    if (quest.value.length === 0) {
+      isSearchModalOpen.value = false;
+    }
+  });
 
   const handleResize = () => {
     windowWidth.value = window.innerWidth;
@@ -128,7 +139,7 @@
 
   if (windowWidth.value < 576) {
     isMobile.value = false;
-  }
+  };
 
   watch(inputText, (newValue) => {
     headerExit.value = newValue !== '';
@@ -153,145 +164,165 @@
     inputText.value = '';
     isSearchModalOpen.value = false;
     headerExit.value = false;
+    if (windowWidth.value < 576) {
+      isMobile.value = false;
+    };
+  };
+
+  if (authStore.isAuth === true) {
+    onMounted(() => {authStore.GetProfile()});
+  }
+
+  const login = () => {
+    if (authStore.isAuth === true) {
+      router.push({name: 'favorites'});
+      isLogInModalOpen.value = false;
+    } else {
+      isLogInModalOpen.value = true;
+    }
   };
 </script>
 
-<style scoped>
+<style lang="scss">
   .header {
     padding: 24px 0;
     background: #00000080;
-  }
 
-  .header__container {
-    justify-content: space-between;
-  }
+    &__container {
+      justify-content: space-between;
+    }
+  
+    &__logo,
+    &__icon {
+      display: inline-block;
+      flex-shrink: 0;
+    }
 
-  .header__logo,
-  .header__icon {
-    display: inline-block;
-    flex-shrink: 0;
-  }
+    &__margin-link:not(:last-child) {
+      margin-right: 40px;
+    }
 
-  .header__margin-link:not(:last-child) {
-    margin-right: 40px;
-  }
+    &__link {
+      border: none;
+      padding: 8px 0;
+      padding-bottom: 9px;
+      font-size: 24px;
+      line-height: 32px;
+      color: white;
+      background: none;
+      cursor: pointer;
+    }
 
-  .header__link {
-    border: none;
-    padding: 8px 0;
-    padding-bottom: 9px;
-    font-size: 24px;
-    line-height: 32px;
-    color: white;
-    background: none;
-    cursor: pointer;
+    &__form {
+      position: relative;
+      display: block;
+      border-radius: 8px;
+      padding: 12px 52px;
+      width: 455px;
+      background: #393B3C;
+    }
+
+    &__btn {
+      position: absolute;
+      top: 14px;
+      left: 18px;
+      border: none;
+      padding: 0;
+      background: none;
+      cursor: pointer;
+    }
+
+    &__input {
+      border: none;
+      width: 100%;
+      color: white;
+      background: #393B3C;
+    }
+
+    &__exit {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      border: none;
+      padding: 0;
+      background: none;
+      cursor: pointer;
+    }
+
+    &__input::placeholder {
+      color: white;
+      opacity: 0.5;
+    }
+
+    &__cube {
+      display: none;
+    }
+
+    &__logo:focus,
+    &__link:focus,
+    &__btn:focus,
+    &__input:focus,
+    &__exit:focus,
+    &__icon:focus {
+      outline: none;
+    }
   }
 
   .border-link {
     border-bottom: 1.5px solid #DC5DFC;
   }
 
-  .header__form {
-    position: relative;
-    display: block;
-    border-radius: 8px;
-    padding: 12px 52px;
-    width: 455px;
-    background: #393B3C;
-  }
-
-  .header__btn {
-    position: absolute;
-    top: 14px;
-    left: 18px;
-    border: none;
-    padding: 0;
-    background: none;
-    cursor: pointer;
-  }
-
-  .header__input {
-    border: none;
-    width: 100%;
-    color: white;
-    background: #393B3C;
-  }
-
-  .header__exit {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    border: none;
-    padding: 0;
-    background: none;
-    cursor: pointer;
-  }
-
-  .header__input::placeholder {
-    color: white;
-    opacity: 0.5;
-  }
-
-  .header__cube {
-    display: none;
-  }
-
-  .header__logo:focus,
-  .header__link:focus,
-  .header__btn:focus,
-  .header__input:focus,
-  .header__exit:focus,
-  .header__icon:focus {
-    outline: none;
-  }
-
   @media (max-width: 1024px) {
-    .header__link {
-      display: none;
-    }
+    .header {
+      &__link {
+        display: none;
+      }
+    
+      &__cube {
+        display: flex;
+      }
 
-    .header__cube {
-      display: flex;
-    }
+      &__margin-icon:not(:last-child) {
+        margin-right: 20px;
+      }
 
-    .header__margin-icon:not(:last-child) {
-      margin-right: 20px;
-    }
-
-    .header__icon {
-      border: none;
-      padding: 0;
-      background: none;
-      cursor: pointer;
+      &__icon {
+        border: none;
+        padding: 0;
+        background: none;
+        cursor: pointer;
+      }
     }
   }
 
   @media (max-width: 768px) {
-    .header__btn {
-      top: 18px;
-    }
+    .header {
+      &__btn {
+        top: 18px;
+      }
 
-    .header__form {
-      position: absolute;
-      top: 16px;
-      left: 20px;
-      padding: 16px 52px;
-      width: calc(100% - 144px);
-    }
+      &__form {
+        position: absolute;
+        top: 16px;
+        left: 20px;
+        padding: 16px 52px;
+        width: calc(100% - 144px);
+      }
 
-    .header__exit {
-      top: 14px;
+      &__exit {
+        top: 14px;
+      }
     }
   }
 
   @media (max-width: 576px) {
     .header {
       padding: 16px 0;
-    }
 
-    .header__logo img {
-      width: 136px;
-      height: 25px;
+      &__logo img {
+        width: 136px;
+        height: 25px;
+      }
     }
   }
   
@@ -300,111 +331,110 @@
   .footer {
     padding: 40px 0;
     background: #0A0B0B;
-  }
-
-  .footer__list {
-    justify-content: space-between;
-  }
-
-  .footer__copyright {
-    font-weight: 700;
-  }
-
-  .footer__text {
-    margin-right: 14px;
-  }
-
-  .footer__subtext {
-    margin-left: 14px;
-    font-weight: 400;
-    opacity: 0.7;
-  }
-
-  .footer__margin-link:not(:last-child) {
-    margin-right: 24px;
-  }
   
-  .footer__margin-link {
-    width: 36px;
-    height: 36px;
-  }
+    &__list {
+      justify-content: space-between;
+    }
 
-  .footer__link {
-    position: relative;
-    display: inline-block;
-    border: 1px solid #FFFFFFCC;
-    border-radius: 8px;
-    width: 34px;
-    height: 34px;
-  }
+    &__copyright {
+      font-weight: 700;
+    }
 
-  .footer__link svg {
-    display: inline-block;
-    flex-shrink: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+    &__text {
+      margin-right: 14px;
+    }
 
-  .footer__link:focus {
-    outline: none;
+    &__subtext {
+      margin-left: 14px;
+      font-weight: 400;
+      opacity: 0.7;
+    }
+
+    &__margin-link:not(:last-child) {
+      margin-right: 24px;
+    }
+    
+    &__margin-link {
+      width: 36px;
+      height: 36px;
+    }
+
+    &__link {
+      position: relative;
+      display: inline-block;
+      border: 1px solid #FFFFFFCC;
+      border-radius: 8px;
+      width: 34px;
+      height: 34px;
+      svg {
+        display: inline-block;
+        flex-shrink: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    &__link:focus {
+      outline: none;
+    }
   }
 
   @media (max-width: 576px) {
     .footer {
       padding: 24px 0;
-    }
-
-    .footer__copyright,
-    .footer__list {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .footer__copyright {
-      margin-bottom: 32px;
-    }
-
-    .footer__text {
-      margin: 0;
-      margin-bottom: 8px;
-    }
-
-    .footer__subtext {
-      margin-left: 12px;
-      font-size: 14px;
-      line-height: 20px;
-    }
-
-    .footer__cube {
-      margin-bottom: 12px;
-    }
     
-    .footer__margin-link {
-      width: 24px;
-      height: 24px;
-    }
+      &__copyright,
+      &__list {
+        flex-direction: column;
+        align-items: flex-start;
+      }
 
-    .footer__link {
-      width: 22px;
-      height: 22px;
-    }
+      &__copyright {
+        margin-bottom: 32px;
+      }
 
-    .footer__margin-link:first-child .footer__link svg {
-      width: 12px;
-    }
+      &__text {
+        margin: 0;
+        margin-bottom: 8px;
+      }
 
-    .footer__margin-link:nth-child(2) .footer__link svg {
-      width: 10px;
-    }
+      &__subtext {
+        margin-left: 12px;
+        font-size: 14px;
+        line-height: 20px;
+      }
 
-    .footer__margin-link:nth-child(3) .footer__link svg {
-      width: 7px;
-    }
+      &__cube {
+        margin-bottom: 12px;
+      }
+      
+      &__margin-link {
+        width: 24px;
+        height: 24px;
+      }
 
-    .footer__margin-link:nth-child(4) .footer__link svg {
-      width: 11px;
+      &__link {
+        width: 22px;
+        height: 22px;
+      }
+
+      &__margin-link:first-child &__link svg {
+        width: 12px;
+      }
+
+      &__margin-link:nth-child(2) &__link svg {
+        width: 10px;
+      }
+
+      &__margin-link:nth-child(3) &__link svg {
+        width: 7px;
+      }
+
+      &__margin-link:nth-child(4) &__link svg {
+        width: 11px;
+      }
     }
   }
 </style>

@@ -20,7 +20,7 @@
         <p class="hero__text">{{ random.plot }}</p>
         <div class="hero__cube flex">
           <button class="hero__btn hero__mobile-btn btn" @click.prevent="isTrailerModalOpen = true">Trailer</button>
-          <button class="hero__add" @click.prevent="isSignInModalOpen = true">
+          <button class="hero__add" :class="{ hero__favorite: authStore.isAuth }" @click.prevent="addFavorites">
             <svg width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M14.5 0C17.5376 0 20 2.5 20 6C20 13 12.5 17 10 18.5C7.5 17 0 13 0 6C0 2.5 2.5 0 5.5 0C7.35997 0 9 1 10 2C11 1 12.64 0 14.5 0ZM10.9339 15.6038C11.8155 15.0485 12.61 14.4955 13.3549 13.9029C16.3337 11.533 18 8.9435 18 6C18 3.64076 16.463 2 14.5 2C13.4241 2 12.2593 2.56911 11.4142 3.41421L10 4.82843L8.5858 3.41421C7.74068 2.56911 6.5759 2 5.5 2C3.55906 2 2 3.6565 2 6C2 8.9435 3.66627 11.533 6.64514 13.9029C7.39 14.4955 8.1845 15.0485 9.0661 15.6038C9.3646 15.7919 9.6611 15.9729 10 16.1752C10.3389 15.9729 10.6354 15.7919 10.9339 15.6038Z" fill="currentColor"/>
             </svg>
@@ -31,7 +31,7 @@
   </section>
 
   <TrailerModal :random="random" :isTrailerModalOpen="isTrailerModalOpen" @close="isTrailerModalOpen = false" />
-  <SignInModal :isSignInModalOpen="isSignInModalOpen" @close="isSignInModalOpen = false" @open="isSignInModalOpen = true" />
+  <LogInModal :isLogInModalOpen="isLogInModalOpen" @close="isLogInModalOpen = false" @open="isLogInModalOpen = true" />
 
   <section class="about">
     <div class="container">
@@ -62,96 +62,107 @@
 
 <script setup lang="ts">
   import { ref } from 'vue'
+  import { useRoute } from 'vue-router';
   import { getFilm } from "@/api/product";
   import type { IFilm } from '@/types/product';
   import TrailerModal from '@/components/TrailerModal.vue';
-  import SignInModal from '@/components/SignInModal.vue';
+  import LogInModal from '@/components/LogInModal.vue';
+  import { useAuthStore } from '@/stores/auth';
   
   const random = ref<IFilm[]>([]);
   const isTrailerModalOpen = ref(false);
-  const isSignInModalOpen = ref(false);
+  const isLogInModalOpen = ref(false);
+  const authStore = useAuthStore();
+  const route = useRoute();
 
   const loadFilm = async () => {
     const response = await getFilm()
     random.value = response
-  }
+  };
 
-  loadFilm()
+  const addFavorites = () => {
+    if (!authStore.isAuth) {
+      isLogInModalOpen.value = true;
+    } else {
+      authStore.EddFavorites(route.params.id);
+    }
+  };
+
+  loadFilm();
 </script>
 
-<style scoped>
+<style lang="scss">
   .about {
     padding-top: 40px;
     padding-bottom: 120px;
-  }
 
-  .about__title {
-    font-size: 40px;
-    line-height: 48px;
-    font-weight: 700;
-  }
+    &__title {
+      font-size: 40px;
+      line-height: 48px;
+      font-weight: 700;
+    }
 
-  .about__cube {
-    width: 500px;
-  }
+    &__cube {
+      width: 500px;
+    }
 
-  .about__item {
-    display: flex;
-    align-items: baseline;
-  }
+    &__item {
+      display: flex;
+      align-items: baseline;
+      span {
+        order: 3;
+      }
+    }
 
-  .about__item::before {
-    content: '';
-    border-bottom: 1px dashed #ffffff80;
-    flex-grow: 1;
-    order: 2;
-    margin: 0 8px;
-  }
+    &__item::before {
+      content: '';
+      border-bottom: 1px dashed #ffffff80;
+      flex-grow: 1;
+      order: 2;
+      margin: 0 8px;
+    }
 
-  .about__item span {
-    order: 3;
-  }
-
-  .about__item:not(:last-child) {
-    margin-bottom: 24px;
+    &__item:not(:last-child) {
+      margin-bottom: 24px;
+    }
   }
 
   @media (max-width: 576px) {
     .about {
       padding: 32px 0;
-    }
 
-    .about__title {
-      margin-bottom: 40px;
-      font-size: 24px;
-      line-height: 32px;
-    }
+      &__title {
+        margin-bottom: 40px;
+        font-size: 24px;
+        line-height: 32px;
+      }
 
-    .about__cube {
-      width: auto;
-    }
+      &__cube {
+        width: auto;
+      }
 
-    .about__item {
-      flex-direction: column;
-      font-size: 14px;
-      line-height: 20px;
-      color: rgba(255, 255, 255, .5);
-    }
+      &__item {
+        flex-direction: column;
+        font-size: 14px;
+        line-height: 20px;
+        color: rgba(255, 255, 255, .5);
+      }
 
-    .about__span {
-      margin-top: 4px;
-      font-size: 18px;
-      line-height: 24px;
-      color: white;
-    }
+      &__item:before {
+        border-bottom: none;
+        margin: 0;
+      }
 
-    .about__item:before {
-      border-bottom: none;
-      margin: 0;
-    }
-
-    .about__item:not(:last-child) {
-      margin-bottom: 12px;
+      &__item:not(:last-child) {
+        margin-bottom: 12px;
+      }
+      
+      &__span {
+        margin-top: 4px;
+        font-size: 18px;
+        line-height: 24px;
+        color: white;
+      }
     }
   }
 </style>

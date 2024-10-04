@@ -1,6 +1,6 @@
 <template>
   <router-link class="search__item" :to="'/film/' + search.id">
-    <img :src="search.posterUrl" alt="" width="40" height="52">
+    <img class="search__img" :src="search.posterUrl" :alt="search.title" width="40" height="52">
     <div>
       <div class="search__cube flex">
         <p class="search__rating search__margin flex" :class="[{'green' : search.tmdbRating >= 7 && search.tmdbRating < 8, 'gray' : search.tmdbRating <= 7 && search.tmdbRating >= 4, 'red' : search.tmdbRating < 4}, 'yellow']">
@@ -28,98 +28,104 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue';
-
   defineProps<{
     search: object,
     index: number
   }>();
 </script>
 
-<style scoped>
-  .search__item {
-    display: flex;
-    justify-content: flex-start;
-    box-sizing: border-box;
-    border: 1px solid #393B3C;
-    border-radius: 6px;
-    padding: 19px 7px;
-    width: 543px;
-    transition: border-color .3s;
-  }
+<style lang="scss">
+  .search {
+    &__item {
+      display: flex;
+      justify-content: flex-start;
+      box-sizing: border-box;
+      border: 1px solid #393B3C;
+      border-radius: 6px;
+      padding: 19px 7px;
+      width: 543px;
+      transition: border-color .3s;
+      img {
+        margin-right: 16px;
+        width: 40px;
+        height: 52px;
+      }
+    }
 
-  .search__item:hover {
-    border-color: #FFFFFF80;
-  }
+    &__item:hover {
+      border-color: #FFFFFF80;
+    }
 
-  .search__item:focus {
-    outline: none;
-  }
+    &__cube {
+      margin-bottom: 8px;
+    }
 
-  .search__item img {
-    margin-right: 16px;
-    width: 40px;
-    height: 52px;
-  }
+    &__rating {
+      border-radius: 16px;
+      padding: 2px 8px;
+      font-size: 12px;
+      line-height: 16px;
+      font-weight: 700;
+      color: #FFFFFF;
+      svg {
+        margin-right: 4px;
+      }
+    }
 
-  .search__cube {
-    margin-bottom: 8px;
-  }
+    &__elem {
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 400;
+      color: #FFFFFFB2;
+    }
 
-  .search__rating {
-    border-radius: 16px;
-    padding: 2px 8px;
-    font-size: 12px;
-    line-height: 16px;
-    font-weight: 700;
-    color: #FFFFFF;
-  }
+    &__margin {
+      margin-right: 12px;
+    }
 
-  .search__rating svg {
-    margin-right: 4px;
-  }
+    &__title {
+      font-size: 18px;
+      line-height: 24px;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
 
-  .search__elem {
-    font-size: 14px;
-    line-height: 20px;
-    font-weight: 400;
-    color: #FFFFFFB2;
-  }
-
-  .search__margin {
-    margin-right: 12px;
-  }
-
-  .search__title {
-    font-size: 18px;
-    line-height: 24px;
-    font-weight: 700;
-    color: #FFFFFF;
+    &__item:focus {
+      outline: none;
+    }
   }
 
   @media (max-width: 1024px) {
-    .search__item {
-      width: calc(100% - 14px);
+    .search {
+      &__item {
+        width: calc(100% - 14px);
+      }
     }
   }
 
   @media (max-width: 576px) {
-    .search__item {
-      flex-direction: column;
-      padding: 0;
-      width: 220px;
-    }
+    .search {
+      &__item {
+        flex-direction: column;
+        padding: 0;
+        img {
+          margin: 0;
+          margin-bottom: 16px;
+          width: 158px;
+          height: 206px;
+        }
+      }
 
-    .search__item img {
-      margin: 0;
-      margin-bottom: 16px;
-      width: 158px;
-      height: 206px;
-    }
+      &__cube {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        width: 220px;
+      }
 
-    .search__cube {
-      display: flex;
-      flex-wrap: wrap;
+      &__margin {
+        margin: 0;
+      }
     }
   }
 </style>

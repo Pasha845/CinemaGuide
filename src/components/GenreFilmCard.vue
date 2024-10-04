@@ -10,11 +10,13 @@
   const props = defineProps<{ film: IGenreFilms }>()
 </script>
 
-<style scoped>
+<style lang="scss">
   @media (max-width: 576px) {
-    .types__item {
-      width: 333px;
-      height: 500px;
+    .types {
+      &__item {
+        width: 333px;
+        height: 500px;
+      }
     }
   }
 </style>

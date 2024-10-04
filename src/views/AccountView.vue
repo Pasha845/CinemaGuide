@@ -33,38 +33,40 @@
   const route = useRoute();
 </script>
 
-<style scoped>
-  .account__margin-link:not(:last-child) {
-    margin-right: 64px;
-  }
+<style lang="scss">
+  .account {
+    &__margin-link:not(:last-child) {
+      margin-right: 64px;
+    }
 
-  .account__link {
-    padding: 8px 2px;
-    padding-bottom: 7px;
-    font-size: 24px;
-    line-height: 32px;
-  }
+    &__link {
+      padding: 8px 2px;
+      padding-bottom: 7px;
+      font-size: 24px;
+      line-height: 32px;
+    }
 
-  .account__svg {
-    margin-right: 10px;
+    &__svg {
+      margin-right: 10px;
+    }
   }
 
   @media (max-width: 576px) {
     .account {
       padding-top: 24px;
       padding-bottom: 68px;
-    }
-
-    .account__list {
-      margin-bottom: 40px;
-    }
     
-    .account__margin-link:not(:last-child) {
-      margin-right: 24px;
-    }
+      &__list {
+        margin-bottom: 40px;
+      }
+      
+      &__margin-link:not(:last-child) {
+        margin-right: 24px;
+      }
 
-    .account__svg {
-      margin-right: 8px;
+      &__svg {
+        margin-right: 8px;
+      }
     }
   }
 </style>

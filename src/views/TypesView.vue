@@ -49,43 +49,42 @@
   loadGenreFilms();
 </script>
 
-<style scoped>
+<style lang="scss">
   .types {
     text-align: center;
-  }
-
-  .types__title {
-    text-transform: capitalize;
-  }
   
-  .types__title svg {
-    margin-right: 16px;
-    padding: 9.4px 13.3px;
-    padding-right: 13.7px;
+    &__title {
+      text-transform: capitalize;
+      svg {
+        margin-right: 16px;
+        padding: 9.4px 13.3px;
+        padding-right: 13.7px;
+      }
+    }
   }
 
   @media (max-width: 576px) {
     .types {
       padding-top: 24px;
       padding-bottom: 40px;
-    }
+    
+      &__title svg {
+        margin-right: 8px;
+        padding: 7.5px 11px;
+        padding-right: 10.6px;
+        width: 10.37px;
+        height: 16.97px;
+      }
 
-    .types__title svg {
-      margin-right: 8px;
-      padding: 7.5px 11px;
-      padding-right: 10.6px;
-      width: 10.37px;
-      height: 16.97px;
-    }
+      &__list {
+        justify-content: center;
+        gap: 24px;
+        margin-bottom: 40px;
+      }
 
-    .types__list {
-      justify-content: center;
-      gap: 24px;
-      margin-bottom: 40px;
-    }
-
-    .types__btn {
-      padding: 18px 92px;
+      &__btn {
+        padding: 18px 92px;
+      }
     }
   }
 </style>

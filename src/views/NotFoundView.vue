@@ -7,14 +7,14 @@
   </div>
 </template>
 
-<style scoped>
+<style lang="scss">
   .error {
     text-align: center;
     padding: 195px 0;
-  }
-
-  .error__title {
-    margin-bottom: 80px;
-    font-size: 60px;
+  
+    &__title {
+      margin-bottom: 80px;
+      font-size: 60px;
+    }
   }
 </style>

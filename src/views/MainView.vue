@@ -22,7 +22,7 @@
         <div class="hero__cube flex">
           <button class="hero__btn btn" @click.prevent="isTrailerModalOpen = true">Trailer</button>
           <router-link class="hero__link" @click.prevent="filmId = random.id" :to="'/film/' + random.id">About the film</router-link>
-          <button class="hero__add" @click.prevent="isSignInModalOpen = true">
+          <button class="hero__add" :class="{ hero__favorite: authStore.isAuth }" @click.prevent="addFavorites">
             <svg width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M14.5 0C17.5376 0 20 2.5 20 6C20 13 12.5 17 10 18.5C7.5 17 0 13 0 6C0 2.5 2.5 0 5.5 0C7.35997 0 9 1 10 2C11 1 12.64 0 14.5 0ZM10.9339 15.6038C11.8155 15.0485 12.61 14.4955 13.3549 13.9029C16.3337 11.533 18 8.9435 18 6C18 3.64076 16.463 2 14.5 2C13.4241 2 12.2593 2.56911 11.4142 3.41421L10 4.82843L8.5858 3.41421C7.74068 2.56911 6.5759 2 5.5 2C3.55906 2 2 3.6565 2 6C2 8.9435 3.66627 11.533 6.64514 13.9029C7.39 14.4955 8.1845 15.0485 9.0661 15.6038C9.3646 15.7919 9.6611 15.9729 10 16.1752C10.3389 15.9729 10.6354 15.7919 10.9339 15.6038Z" fill="currentColor"/>
             </svg>
@@ -38,7 +38,7 @@
   </section>
 
   <TrailerModal :random = "random" :isTrailerModalOpen = "isTrailerModalOpen" @close="isTrailerModalOpen = false" />
-  <SignInModal :isSignInModalOpen = "isSignInModalOpen" @close="isSignInModalOpen = false" @open="isSignInModalOpen = true" />
+  <LogInModal :isLogInModalOpen = "isLogInModalOpen" @close="isLogInModalOpen = false" @open="isLogInModalOpen = true" />
 
   <section class="films">
     <div class="films__container container">
@@ -60,16 +60,15 @@
   import type { IRandomFilm, IProduct } from '../types/product';
   import FilmCard from "@/components/FilmCard.vue";
   import TrailerModal from '@/components/TrailerModal.vue';
-  import SignInModal from '@/components/SignInModal.vue';
+  import LogInModal from '@/components/LogInModal.vue';
   import { useAuthStore } from '@/stores/auth';
 
   const random = ref<IRandomFilm[]>([]);
   const products = ref<IProduct[]>([]);
   const cardIsLoading = ref(false);
   const isTrailerModalOpen = ref(false);
-  const isSignInModalOpen = ref(false);
+  const isLogInModalOpen = ref(false);
   const authStore = useAuthStore();
-  /* const isActive = ref(false); */
 
   const loadRandomFilms = async () => {
     const response = await getRandomFilm();
@@ -101,57 +100,61 @@
     cardIsLoading.value = false;
   };
 
-  /* function favorite () {
-    isActive.value = !isActive.value;
-  }; */
+  const addFavorites = () => {
+    if (!authStore.isAuth) {
+      isLogInModalOpen.value = true;
+    } else {
+      authStore.EddFavorites(random.value.id);
+    }
+  };
 
   loadRandomFilms();
   loadTopFilms();
 </script>
 
-<style scoped>
+<style lang="scss">
   .films {
     padding-top: 40px;
     padding-bottom: 120px;
-  }
 
-  .films__title {
-    margin-bottom: 64px;
-    font-size: 40px;
-    line-height: 48px;
-    font-weight: 700;
-  }
+    &__title {
+      margin-bottom: 64px;
+      font-size: 40px;
+      line-height: 48px;
+      font-weight: 700;
+    }
 
-  .films__list {
-    counter-reset: num;
+    &__list {
+      counter-reset: num;
+    }
   }
 
   @media (max-width: 576px) {
     .films {
       padding: 32px 0;
-    }
 
-    .films__container {
-      padding-left: 0;
-      padding-right: 0;
-    }
+      &__container {
+        padding-left: 0;
+        padding-right: 0;
+      }
 
-    .films__title {
-      margin-bottom: 0;
-      padding-left: 20px;
-      padding-right: 20px;
-      font-size: 24px;
-      line-height: 32px;
-    }
+      &__title {
+        margin-bottom: 0;
+        padding-left: 20px;
+        padding-right: 20px;
+        font-size: 24px;
+        line-height: 32px;
+      }
 
-    .films__list {
-      justify-content: flex-start;
-      flex-wrap: nowrap;
-      white-space: nowrap;
-      overflow-x: scroll;
-      gap: 28px;
-      padding: 32px 20px;
-      padding-top: 40px;
+      &__list {
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+        overflow-x: scroll;
+        gap: 28px;
+        padding: 32px 20px;
+        padding-top: 40px;
+      }
     }
   }
 </style>

@@ -30,16 +30,16 @@
   loadGenreFilms()
 </script>
 
-<style scoped>
+<style lang="scss">
   @media (max-width: 576px) {
     .genre {
       padding-top: 24px;
       padding-bottom: 40px;
-    }
 
-    .genre__list {
-      justify-content: center;
-      gap: 24px;
+      &__list {
+        justify-content: center;
+        gap: 24px;
+      }
     }
   }
 </style>
