@@ -3,7 +3,8 @@ import axios from 'axios';
 import { defineStore } from 'pinia';
 
 export interface GetProfile {
-
+  name: string
+  surname: string
 };
 
 export interface GetFavorites {
@@ -78,14 +79,13 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function DeleteFavorites(deleteFilm: number) {
     try {
-      await axios.post('https://cinemaguide.skillbox.cc/favorites', {id: deleteFilm},
-      {
+      await axios.delete(`https://cinemaguide.skillbox.cc/favorites/${deleteFilm}`, {
         withCredentials: true
       });
     } catch (error) {
       throw new Error('Error removing film from favorites');
-    };
-  };
+    }
+  }
 
   async function LoginOut() {
     try {

@@ -2,7 +2,7 @@
   <div class="mb-64">
     <div class="account__item flex">
       <div class="account__icon">
-        <div>{{ authStore.profile.name + authStore.profile.surname }}</div>
+        <div>{{ initials }}</div>
       </div>
       <div>
         <p class="account__subtext">Name Surname</p>
@@ -25,13 +25,19 @@
 </template>
 
 <script setup lang="ts">
-  import { onMounted } from 'vue';
+  import { onMounted, computed, } from 'vue';
   import { useAuthStore } from '@/stores/auth';
 
   const authStore = useAuthStore();
 
   onMounted(() => {
     authStore.GetProfile()
+  });
+
+  const initials = computed(() => {
+    const name = authStore.profile.name || '';
+    const surname = authStore.profile.surname || '';
+    return (name.charAt(0) + surname.charAt(0));
   });
 </script>
 

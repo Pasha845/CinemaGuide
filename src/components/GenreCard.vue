@@ -1,6 +1,6 @@
 <template>
   <router-link class="genre__item" :to="'/types/' + genre" :genre="genre">
-    <img class="genre__img" :src="array[index].img" alt="Genre image" width="290" height="220">
+    <img class="genre__img" :src="array[index].img" :alt="genre" width="290" height="220">
     <p class="genre__text">{{ genre }}</p>
   </router-link>
 </template>

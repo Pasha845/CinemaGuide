@@ -1,26 +1,26 @@
 <template>
   <section class="hero">
     <div class="hero__container container">
-      <img :src="random.backdropUrl" alt="Film image" width="900" height="680">
+      <img :src="movie.backdropUrl" :alt="movie.title" width="900" height="680">
       <div class="hero__item">
         <div class="hero__wrapper flex">
-          <p class="hero__rating flex" :class="[{'green' : random.tmdbRating >= 7 && random.tmdbRating < 8, 'gray' : random.tmdbRating <= 7 && random.tmdbRating >= 4, 'red' : random.tmdbRating < 4}, 'yellow']">
+          <p class="hero__rating flex" :class="[{'green' : movie.tmdbRating >= 7 && movie.tmdbRating < 8, 'gray' : movie.tmdbRating <= 7 && movie.tmdbRating >= 4, 'red' : movie.tmdbRating < 4}, 'yellow']">
             <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M8.00105 12.1733L3.29875 14.8054L4.34897 9.51991L0.392578 5.86118L5.74394 5.22669L8.00105 0.333313L10.2581 5.22669L15.6095 5.86118L11.6531 9.51991L12.7033 14.8054L8.00105 12.1733Z" fill="white"/>
             </svg>
-            {{ random.tmdbRating }}
+            {{ movie.tmdbRating }}
           </p>
-          <p class="hero__year">{{ random.releaseYear == null ? '' : random.releaseYear }}</p>
-          <p class="hero__genre" v-for="genre in random.genres" :key="genre.id">{{ genre }}</p>
+          <p class="hero__year">{{ movie.releaseYear == null ? '' : movie.releaseYear }}</p>
+          <p class="hero__genre" v-for="genre in movie.genres" :key="genre.id">{{ genre }}</p>
           <p class="hero__length">
-            {{ random.runtime > 60 && random.runtime < 120 ? ' 1 h ' + (random.runtime - 60) + ' min' : random.runtime > 120 && random.runtime < 180 ? ' 2 h ' + (random.runtime - 120) + ' min' : random.runtime > 180 ? ' 3 h ' + (random.runtime - 180) + ' min' : random.runtime < 60 + ' min' ? random.runtime == null : ''}} 
+            {{ movie.runtime > 60 && movie.runtime < 120 ? ' 1 h ' + (movie.runtime - 60) + ' min' : movie.runtime > 120 && movie.runtime < 180 ? ' 2 h ' + (movie.runtime - 120) + ' min' : movie.runtime > 180 ? ' 3 h ' + (movie.runtime - 180) + ' min' : movie.runtime < 60 + ' min' ? movie.runtime == null : ''}} 
           </p>
         </div>
-        <h1 class="hero__title title">{{ random.title }}</h1>
-        <p class="hero__text">{{ random.plot }}</p>
+        <h1 class="hero__title title">{{ movie.title }}</h1>
+        <p class="hero__text">{{ movie.plot }}</p>
         <div class="hero__cube flex">
           <button class="hero__btn hero__mobile-btn btn" @click.prevent="isTrailerModalOpen = true">Trailer</button>
-          <button class="hero__add" :class="{ hero__favorite: authStore.isAuth }" @click.prevent="addFavorites">
+          <button class="hero__add" :class="{'hero__favorite' : isActive }" @click.prevent="addFavorites">
             <svg width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M14.5 0C17.5376 0 20 2.5 20 6C20 13 12.5 17 10 18.5C7.5 17 0 13 0 6C0 2.5 2.5 0 5.5 0C7.35997 0 9 1 10 2C11 1 12.64 0 14.5 0ZM10.9339 15.6038C11.8155 15.0485 12.61 14.4955 13.3549 13.9029C16.3337 11.533 18 8.9435 18 6C18 3.64076 16.463 2 14.5 2C13.4241 2 12.2593 2.56911 11.4142 3.41421L10 4.82843L8.5858 3.41421C7.74068 2.56911 6.5759 2 5.5 2C3.55906 2 2 3.6565 2 6C2 8.9435 3.66627 11.533 6.64514 13.9029C7.39 14.4955 8.1845 15.0485 9.0661 15.6038C9.3646 15.7919 9.6611 15.9729 10 16.1752C10.3389 15.9729 10.6354 15.7919 10.9339 15.6038Z" fill="currentColor"/>
             </svg>
@@ -30,30 +30,30 @@
     </div>
   </section>
 
-  <TrailerModal :random="random" :isTrailerModalOpen="isTrailerModalOpen" @close="isTrailerModalOpen = false" />
-  <LogInModal :isLogInModalOpen="isLogInModalOpen" @close="isLogInModalOpen = false" @open="isLogInModalOpen = true" />
+  <TrailerModal :movie = "movie" :isTrailerModalOpen="isTrailerModalOpen" @close="isTrailerModalOpen = false" />
+  <LogInModal :isLogInModalOpen = "isLogInModalOpen" @close="isLogInModalOpen = false" @open="isLogInModalOpen = true" />
 
   <section class="about">
     <div class="container">
       <h2 class="about__title mb-64">About the film</h2>
       <ul class="about__cube">
         <li class="about__item">Original language
-          <span class="about__span">{{ random.language == null ? 'unknown' : random.language }}</span>
+          <span class="about__span">{{ movie.language == null ? 'unknown' : movie.language }}</span>
         </li>
         <li class="about__item">Budget
-          <span class="about__span">{{ random.budget == null ? 'unknown' : random.budget + ' $' }}</span>
+          <span class="about__span">{{ movie.budget == null ? 'unknown' : movie.budget + ' $' }}</span>
         </li>
         <li class="about__item">Revenue
-          <span class="about__span">{{ random.revenue == null ? 'unknown' : random.revenue + ' $' }}</span>
+          <span class="about__span">{{ movie.revenue == null ? 'unknown' : movie.revenue + ' $' }}</span>
         </li>
         <li class="about__item">Director
-          <span class="about__span">{{ random.director == null ? 'unknown' : random.director }}</span>
+          <span class="about__span">{{ movie.director == null ? 'unknown' : movie.director }}</span>
         </li>
         <li class="about__item">Production
-          <span class="about__span">{{ random.production == null ? 'unknown' : random.production }}</span>
+          <span class="about__span">{{ movie.production == null ? 'unknown' : movie.production }}</span>
         </li>
         <li class="about__item">Awards
-          <span class="about__span">{{ random.awardsSummary == null ? 'unknown' : random.awardsSummary }}</span>
+          <span class="about__span">{{ movie.awardsSummary == null ? 'unknown' : movie.awardsSummary }}</span>
         </li>
       </ul>
     </div>
@@ -61,34 +61,44 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue'
+  import { ref, watch, onMounted } from 'vue';
   import { useRoute } from 'vue-router';
-  import { getFilm } from "@/api/product";
-  import type { IFilm } from '@/types/product';
+  import { getMovie } from "@/api/product";
+  import type { IMovie } from '@/types/product';
   import TrailerModal from '@/components/TrailerModal.vue';
   import LogInModal from '@/components/LogInModal.vue';
   import { useAuthStore } from '@/stores/auth';
   
-  const random = ref<IFilm[]>([]);
+  const movie = ref<IMovie[]>([]);
   const isTrailerModalOpen = ref(false);
   const isLogInModalOpen = ref(false);
   const authStore = useAuthStore();
   const route = useRoute();
+  const movieId = route.params.id;
+  const isActive = ref(false);
 
-  const loadFilm = async () => {
-    const response = await getFilm()
-    random.value = response
+  const loadMovie = async () => {
+    movie.value = await getMovie();
   };
+
+  onMounted(async () => {
+    await authStore.GetProfile();
+    isActive.value = authStore.profile.favorites.includes(movieId);
+  });
 
   const addFavorites = () => {
     if (!authStore.isAuth) {
       isLogInModalOpen.value = true;
     } else {
-      authStore.EddFavorites(route.params.id);
-    }
+      authStore.EddFavorites(movieId);
+    };
   };
 
-  loadFilm();
+  loadMovie();
+
+  watch(() => authStore.profile.favorites, (newFavorites) => {
+    isActive.value = newFavorites.includes(movieId);
+  });
 </script>
 
 <style lang="scss">

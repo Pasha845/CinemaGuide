@@ -10,7 +10,7 @@ export interface IRandomFilm {
   trailerUrl: string
 }
 
-export interface IProduct {
+export interface ITopFilms {
   id: number,
   posterUrl: string
 }
@@ -23,7 +23,7 @@ export interface Search {
   releaseYear: number;
 }
 
-export interface IFilm {
+export interface IMovie {
   trailerUrl: string,
   posterUrl: string,
   title: string,

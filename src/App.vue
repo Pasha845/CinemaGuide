@@ -171,7 +171,7 @@
 
   if (authStore.isAuth === true) {
     onMounted(() => {authStore.GetProfile()});
-  }
+  };
 
   const login = () => {
     if (authStore.isAuth === true) {

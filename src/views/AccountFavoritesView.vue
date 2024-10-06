@@ -16,7 +16,7 @@
   const authStore = useAuthStore();
 
   onMounted(() => {
-    authStore.GetFavorites()
+    authStore.GetFavorites();
   });
 </script>
 
