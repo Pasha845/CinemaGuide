@@ -152,28 +152,28 @@
 
   const signInModal = () => {
     if (signInEmail.value !== '' && signInPass.value !== '' && signInName.value !== '' && signInSurname.value !== '' && signInPass.value === signInTwoPass.value) {
-      authStore.SignUp(signInEmail.value, signInPass.value, signInName.value, signInSurname.value)
-      signInEmail.value = ''
-      signInName.value = ''
-      signInSurname.value = ''
-      signInPass.value = ''
-      signInTwoPass.value = ''
+      authStore.SignUp(signInEmail.value, signInPass.value, signInName.value, signInSurname.value);
+      signInEmail.value = '';
+      signInName.value = '';
+      signInSurname.value = '';
+      signInPass.value = '';
+      signInTwoPass.value = '';
       isSignInModalOpen.value = false;
       isCompleteModalOpen.value = true;
-    }
+    };
   };
 
   const logInModal = () => {
     if ( logInEmail.value !== '' && logInPass.value !== '') {
       authStore.LogIn(logInEmail.value, logInPass.value);
-      logInEmail.value = ''
-      logInPass.value = ''
+      logInEmail.value = '';
+      logInPass.value = '';
       emit('close');
       router.push({name: 'favorites'});
     } if (logInEmail.value === '') {
       logInErrorEmail.value = true;
     } if (logInPass.value === '') {
       logInErrorPass.value = true;
-    }
+    };
   };
 </script>

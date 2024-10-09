@@ -81,24 +81,29 @@
     movie.value = await getMovie();
   };
 
-  onMounted(async () => {
-    await authStore.GetProfile();
-    isActive.value = authStore.profile.favorites.includes(movieId);
-  });
-
   const addFavorites = () => {
     if (!authStore.isAuth) {
       isLogInModalOpen.value = true;
     } else {
       authStore.EddFavorites(movieId);
+      isActive.value = true;
     };
   };
 
-  loadMovie();
-
-  watch(() => authStore.profile.favorites, (newFavorites) => {
-    isActive.value = newFavorites.includes(movieId);
+  onMounted(async () => {
+    if (authStore.isAuth === true) {
+      await authStore.GetProfile();
+      isActive.value = authStore.profile.favorites.includes(movieId);
+    };
   });
+
+  watch(() => route.params.id, (newId) => {
+    if (newId && route.name === 'film') {
+      /*loadMovie();*/
+    };
+  });
+
+  loadMovie();
 </script>
 
 <style lang="scss">

@@ -157,7 +157,7 @@
   });
 
   const findModule = () => {
-    isSearchModalOpen.value = inputText.value !== '';
+    isSearchModalOpen.value = inputText.value !== '' && quest.value.length !== 0;
   };
 
   const exit = () => {

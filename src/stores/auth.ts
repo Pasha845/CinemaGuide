@@ -56,7 +56,7 @@ export const useAuthStore = defineStore('auth', () => {
     };
   };
 
-  async function EddFavorites(filmId: number) {
+  async function EddFavorites(filmId: string) {
     try {
       await axios.post('https://cinemaguide.skillbox.cc/favorites', {id: filmId},
       {
@@ -97,5 +97,5 @@ export const useAuthStore = defineStore('auth', () => {
     };
   };
 
-  return {SignUp, LogIn, isAuth, GetProfile, profile, EddFavorites, GetFavorites, fav, DeleteFavorites, LoginOut};
+  return {isAuth, SignUp, LogIn, GetProfile, profile, EddFavorites, GetFavorites, fav, DeleteFavorites, LoginOut};
 });

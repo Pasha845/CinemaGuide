@@ -46,6 +46,7 @@ export const getMovie = async (): Promise<IMovie[]> => {
     const movie: IMovie[] = await fetchResponse.json();
 
     return movie;
+
   } catch(err) {
     throw new Error('Film loading error');
   };

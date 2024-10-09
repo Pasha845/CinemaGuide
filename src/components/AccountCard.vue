@@ -15,9 +15,10 @@
   const newFav = defineProps<{ fav: { id: number } }>();
   const authStore = useAuthStore();
 
-  const delFavorite = (event: MouseEvent) => {
+  const delFavorite = async (event: MouseEvent) => {
     event.preventDefault();
-    authStore.DeleteFavorites(newFav.fav.id);
+    await authStore.DeleteFavorites(newFav.fav.id);
+    await authStore.GetFavorites();
   };
 </script>
 

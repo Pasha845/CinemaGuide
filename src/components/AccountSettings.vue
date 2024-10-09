@@ -31,7 +31,9 @@
   const authStore = useAuthStore();
 
   onMounted(() => {
-    authStore.GetProfile()
+    if (authStore.isAuth) {
+      authStore.GetProfile()
+    };
   });
 
   const initials = computed(() => {

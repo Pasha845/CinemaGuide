@@ -34,12 +34,12 @@ const router = createRouter({
         {
           name: 'favorites',
           path: '/account/favorites',
-          component: () => import('@/views/AccountFavoritesView.vue')
+          component: () => import('@/components/AccountFavorites.vue')
         },
         {
           name: 'settings',
           path: '/account/settings',
-          component: () => import('@/views/AccountSettingsView.vue')
+          component: () => import('@/components/AccountSettings.vue')
         }
       ]
     },

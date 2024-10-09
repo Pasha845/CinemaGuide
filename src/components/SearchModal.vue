@@ -1,7 +1,7 @@
 <template>
   <div class="search__modal modal" v-if="isSearchModalOpen">
     <div class="search__container modal-container">
-      <SearchFilmCard
+      <SearchCard
         v-for="(search, index) in quest"
         :key="search.id"
         :search="search"
@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
   import type { Search } from "../types/product";
-  import SearchFilmCard from "@/components/SearchFilmCard.vue";
+  import SearchCard from "@/components/SearchCard.vue";
 
   defineEmits(['close']);
   defineProps<{
