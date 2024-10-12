@@ -1,6 +1,7 @@
 <template>
   <router-link class="genre__item" :to="'/types/' + genre" :genre="genre">
-    <img class="genre__img" :src="array[index].img" :alt="genre" width="290" height="220">
+    <div v-if="cardLoading" class="loader"></div>
+    <img class="genre__img" @load="loadCard" :src="array[index].img" :alt="genre" width="290" height="220">
     <p class="genre__text">{{ genre }}</p>
   </router-link>
 </template>
@@ -12,6 +13,12 @@
     genre: string,
     index: number
   }>();
+
+  const cardLoading = ref(true);
+
+  const loadCard = () => {
+    cardLoading.value = false;
+  };
   
   const array = ref([
     {
@@ -80,6 +87,7 @@
 <style lang="scss">
   .genre {
     &__item {
+      position: relative;
       display: flex;
       flex-direction: column;
       border: 1px solid #FFFFFF40;

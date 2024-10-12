@@ -1,6 +1,9 @@
 <template>
   <router-link class="search__item" :to="'/film/' + search.id">
-    <img class="search__img" :src="search.posterUrl" :alt="search.title" width="40" height="52">
+    <div v-if="cardLoading" class="search__load load">
+      <div class="loader"></div>
+    </div>
+    <img @load="loadCard" class="search__img" :src="search.posterUrl" :alt="search.title" width="40" height="52">
     <div>
       <div class="search__cube flex">
         <p class="search__rating search__margin flex" :class="[{'green' : search.tmdbRating >= 7 && search.tmdbRating < 8, 'gray' : search.tmdbRating <= 7 && search.tmdbRating >= 4, 'red' : search.tmdbRating < 4}, 'yellow']">
@@ -28,15 +31,24 @@
 </template>
 
 <script setup lang="ts">
+  import { ref } from 'vue';
+
   defineProps<{
     search: object,
     index: number
   }>();
+
+  const cardLoading = ref(true);
+
+  const loadCard = () => {
+    cardLoading.value = false;
+  };
 </script>
 
 <style lang="scss">
   .search {
     &__item {
+      position: relative;
       display: flex;
       justify-content: flex-start;
       box-sizing: border-box;
@@ -54,6 +66,19 @@
 
     &__item:hover {
       border-color: #FFFFFF80;
+    }
+
+    &__load {
+      top: 19px;
+      left: 7px;
+      width: 40px;
+      height: 52px;
+      .loader {
+        top: calc(50% - 10px);
+        left: calc(50% - 10px);
+        border: 2px solid #FFFFFF;
+        width: 20px;
+      }
     }
 
     &__cube {
@@ -113,6 +138,19 @@
           margin-bottom: 16px;
           width: 158px;
           height: 206px;
+        }
+      }
+
+      &__load {
+        top: 0;
+        left: 0;
+        width: 158px;
+        height: 206px;
+        .loader {
+          top: calc(50% - 15px);
+          left: calc(50% - 15px);
+          border: 3px solid #FFFFFF;
+          width: 30px;
         }
       }
 

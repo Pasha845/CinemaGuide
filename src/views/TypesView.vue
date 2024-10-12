@@ -8,7 +8,7 @@
         {{ genre }}
       </h1>
 
-      <div class="films__list types__list list mb-64">
+      <div class="types__list list mb-64">
         <GenreFilmCard
           v-for="film in films"
           :key="film.id"

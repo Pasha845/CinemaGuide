@@ -1,16 +1,24 @@
 <template>
   <router-link class="films__item item" :to="'/film/' + top.id">
-    <img v-if="filmIsLoading" :src="top.posterUrl" :alt="top.title">
-    <div v-else class="loader"></div>
+    <div v-if="cardLoading" class="loader"></div>
+    <img @load="loadCard" @error="errorCard" :src="top.posterUrl" :alt="top.title">
   </router-link>
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted } from "vue";
+  import { ref } from "vue";
   import type { ITopFilms } from "../types/product";
 
   defineProps<{ top: ITopFilms }>();
-  const filmIsLoading = ref(true);
+  const cardLoading = ref(true);
+
+  const loadCard = () => {
+    cardLoading.value = false;
+  };
+
+  const errorCard = () => {
+    cardLoading.value = false;
+  };
 </script>
 
 <style lang="scss">

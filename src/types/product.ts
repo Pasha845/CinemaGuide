@@ -11,6 +11,7 @@ export interface IRandomFilm {
 }
 
 export interface ITopFilms {
+  title: string | undefined;
   id: number,
   posterUrl: string
 }
@@ -46,6 +47,7 @@ export interface IGenre {
 }
 
 export interface IGenreFilms {
+  title: string | undefined;
   id: number,
   posterUrl: string
 }

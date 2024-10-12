@@ -1,8 +1,10 @@
 <template>
   <section class="hero">
     <div class="hero__container container">
-      <img v-if="!cardIsLoading" @load="handleLoad" :src="movie.backdropUrl" :alt="movie.title" width="900" height="680">
-      <div v-else class="loader"></div>
+      <div v-if="cardLoading" class="load">
+        <div class="loader"></div>
+      </div>
+      <img @load="loadCard" @error="errorCard" :src="movie.backdropUrl" :alt="movie.title" width="900" height="680">
       <div class="hero__item">
         <div class="hero__wrapper flex">
           <p class="hero__rating flex" :class="[{'green' : movie.tmdbRating >= 7 && movie.tmdbRating < 8, 'gray' : movie.tmdbRating <= 7 && movie.tmdbRating >= 4, 'red' : movie.tmdbRating < 4}, 'yellow']">
@@ -22,7 +24,7 @@
         <div class="hero__cube flex">
           <button class="hero__btn btn" @click.prevent="isTrailerModalOpen = true">Trailer</button>
           <router-link class="hero__link" :to="'/film/' + movie.id">About the film</router-link>
-          <button class="hero__add" :class="{'hero__favorite': isActive }" @click.prevent="addFavorites(movie.id)">
+          <button class="hero__add" :class="{'hero__favorite': isActive }" @click.prevent="giveFavorites(movie.id)">
             <svg width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M14.5 0C17.5376 0 20 2.5 20 6C20 13 12.5 17 10 18.5C7.5 17 0 13 0 6C0 2.5 2.5 0 5.5 0C7.35997 0 9 1 10 2C11 1 12.64 0 14.5 0ZM10.9339 15.6038C11.8155 15.0485 12.61 14.4955 13.3549 13.9029C16.3337 11.533 18 8.9435 18 6C18 3.64076 16.463 2 14.5 2C13.4241 2 12.2593 2.56911 11.4142 3.41421L10 4.82843L8.5858 3.41421C7.74068 2.56911 6.5759 2 5.5 2C3.55906 2 2 3.6565 2 6C2 8.9435 3.66627 11.533 6.64514 13.9029C7.39 14.4955 8.1845 15.0485 9.0661 15.6038C9.3646 15.7919 9.6611 15.9729 10 16.1752C10.3389 15.9729 10.6354 15.7919 10.9339 15.6038Z" fill="currentColor"/>
             </svg>
@@ -55,17 +57,17 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, watch, onMounted } from 'vue';
+  import { ref } from 'vue';
   import { getRandomFilm, getTopFilms } from "../api/product";
   import type { IRandomFilm, ITopFilms } from '../types/product';
   import FilmCard from "@/components/FilmCard.vue";
   import TrailerModal from '@/components/TrailerModal.vue';
   import LogInModal from '@/components/LogInModal.vue';
-  import { useAuthStore } from '@/stores/auth';
+  import { useAuthStore } from '../stores/auth';
 
   const movie = ref<IRandomFilm[]>([]);
   const tops = ref<ITopFilms[]>([]);
-  const cardIsLoading = ref(false);
+  const cardLoading = ref(true);
   const isTrailerModalOpen = ref(false);
   const isLogInModalOpen = ref(false);
   const authStore = useAuthStore();
@@ -79,23 +81,33 @@
     tops.value = await getTopFilms();
   };
 
-  const handleLoad = () => {
-    cardIsLoading.value = false;
+  const loadCard = () => {
+    cardLoading.value = false;
   };
 
-  const addFavorites = async (movieId) => {
+  const errorCard = () => {
+    cardLoading.value = false;
+  };
+
+  const giveFavorites = async (movieId: any) => {
     if (!authStore.isAuth) {
       isLogInModalOpen.value = true;
     } else {
-      authStore.EddFavorites(String(movieId));
-      isActive.value = true;
+      if(!isActive.value) {
+        authStore.EddFavorites(String(movieId));
+        isActive.value = true;
+      } else {
+        authStore.DeleteFavorites(movieId);
+        isActive.value = false;
+      };
     };
   };
 
   const reload = () => {
     loadRandomFilms();
+    cardLoading.value = true;
     isActive.value = false;
-  }
+  };
 
   loadRandomFilms();
   loadTopFilms();

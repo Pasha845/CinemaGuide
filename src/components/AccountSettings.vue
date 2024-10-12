@@ -1,32 +1,34 @@
 <template>
-  <div class="mb-64">
-    <div class="account__item flex">
-      <div class="account__icon">
-        <div>{{ initials }}</div>
+  <div class="account__newlist">
+    <div class="mb-64">
+      <div class="account__subitem flex">
+        <div class="account__icon">
+          <div>{{ initials }}</div>
+        </div>
+        <div>
+          <p class="account__subtext">Name Surname</p>
+          <p class="account__text">{{ authStore.profile.name }} {{ authStore.profile.surname }}</p>
+        </div>
       </div>
-      <div>
-        <p class="account__subtext">Name Surname</p>
-        <p class="account__text">{{ authStore.profile.name }} {{ authStore.profile.surname }}</p>
+      <div class="account__subitem flex">
+        <div class="account__icon">
+          <svg width="22" height="18" viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 0C21.5523 0 22 0.44772 22 1V17.0066C22 17.5552 21.5447 18 21.0082 18H2.9918C2.44405 18 2 17.5551 2 17.0066V16H20V4.3L12 11.5L2 2.5V1C2 0.44772 2.44772 0 3 0H21ZM8 12V14H0V12H8ZM5 7V9H0V7H5ZM19.5659 2H4.43414L12 8.8093L19.5659 2Z" fill="white"/>
+          </svg>
+        </div>
+        <div>
+          <p class="account__subtext">Email</p>
+          <p class="account__text">{{ authStore.profile.email }}</p>
+        </div>
       </div>
     </div>
-    <div class="account__item flex">
-      <div class="account__icon">
-        <svg width="22" height="18" viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M21 0C21.5523 0 22 0.44772 22 1V17.0066C22 17.5552 21.5447 18 21.0082 18H2.9918C2.44405 18 2 17.5551 2 17.0066V16H20V4.3L12 11.5L2 2.5V1C2 0.44772 2.44772 0 3 0H21ZM8 12V14H0V12H8ZM5 7V9H0V7H5ZM19.5659 2H4.43414L12 8.8093L19.5659 2Z" fill="white"/>
-        </svg>
-      </div>
-      <div>
-        <p class="account__subtext">Email</p>
-        <p class="account__text">{{ authStore.profile.email }}</p>
-      </div>
-    </div>
+    <router-link class="btn" @click="authStore.LoginOut" to="/">Log out of your account</router-link>
   </div>
-  <router-link class="btn" @click="authStore.LoginOut" to="/">Log out of your account</router-link>
 </template>
 
 <script setup lang="ts">
   import { onMounted, computed, } from 'vue';
-  import { useAuthStore } from '@/stores/auth';
+  import { useAuthStore } from '../stores/auth';
 
   const authStore = useAuthStore();
 
@@ -45,7 +47,7 @@
 
 <style lang="scss">
   .account {
-    &__item:not(:last-child) {
+    &__subitem:not(:last-child) {
       margin-bottom: 40px;
     }
   
@@ -80,6 +82,12 @@
 
   @media (max-width: 576px) {
     .account {
+      &__newlist {
+        margin-top: 40px;
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
       &__icon {
         width: 48px;
         height: 48px;

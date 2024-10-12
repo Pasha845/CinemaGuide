@@ -2,7 +2,7 @@
   <section class="account padding">
     <div class="container">
       <h1 class="title">My account</h1>
-      <ul class="account__list flex mb-64">
+      <ul class="account__sublist flex mb-64">
         <li class="account__margin-link">
           <router-link class="account__link link flex" :class="{'border-link' : route.name === 'favorites'}" to="/account/favorites">
             <svg class="account__svg" width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -20,9 +20,10 @@
           </router-link>
         </li>
       </ul>
+    </div>
 
+    <div class="account__container container">
       <router-view />
-
     </div>
   </section>
 </template>
@@ -55,13 +56,22 @@
     .account {
       padding-top: 24px;
       padding-bottom: 68px;
+
+      &__container {
+        padding-left: 0;
+        padding-right: 0;
+      }
     
-      &__list {
-        margin-bottom: 40px;
+      &__sublist {
+        margin-bottom: 0;
       }
       
       &__margin-link:not(:last-child) {
         margin-right: 24px;
+      }
+
+      &__link {
+        font-size: 19px;
       }
 
       &__svg {
