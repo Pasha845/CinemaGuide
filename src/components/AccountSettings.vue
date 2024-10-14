@@ -34,7 +34,7 @@
 
   onMounted(() => {
     if (authStore.isAuth) {
-      authStore.GetProfile()
+      authStore.GetProfile();
     };
   });
 

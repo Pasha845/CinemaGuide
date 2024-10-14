@@ -25,7 +25,7 @@
   import { useRoute } from "vue-router";
   import { getGenreFilms } from "../api/product";
   import type { IGenreFilms } from '../types/product';
-  import GenreFilmCard from "@/components/GenreFilmCard.vue";
+  import GenreFilmCard from "../components/GenreFilmCard.vue";
 
   const films = ref<IGenreFilms[]>([]);
   const route = useRoute();

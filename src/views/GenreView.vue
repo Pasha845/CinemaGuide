@@ -17,7 +17,7 @@
 <script setup lang="ts">
   import { ref } from 'vue'
   import { getGenres } from "../api/product"
-  import GenreCard from "@/components/GenreCard.vue"
+  import GenreCard from "../components/GenreCard.vue"
   import type { IGenre } from '../types/product';
 
   const genres = ref<IGenre[]>([])

@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
   import type { Search } from "../types/product";
-  import SearchCard from "@/components/SearchCard.vue";
+  import SearchCard from "../components/SearchCard.vue";
 
   defineEmits(['close']);
   defineProps<{

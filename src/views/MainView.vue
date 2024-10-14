@@ -60,9 +60,9 @@
   import { ref } from 'vue';
   import { getRandomFilm, getTopFilms } from "../api/product";
   import type { IRandomFilm, ITopFilms } from '../types/product';
-  import FilmCard from "@/components/FilmCard.vue";
-  import TrailerModal from '@/components/TrailerModal.vue';
-  import LogInModal from '@/components/LogInModal.vue';
+  import FilmCard from "../components/FilmCard.vue";
+  import TrailerModal from '../components/TrailerModal.vue';
+  import LogInModal from '../components/LogInModal.vue';
   import { useAuthStore } from '../stores/auth';
 
   const movie = ref<IRandomFilm[]>([]);

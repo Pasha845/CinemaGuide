@@ -406,12 +406,21 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 .modal-label {
+  position: relative;
   border: 1px solid rgba(0, 0, 0, 0.4);
   border-radius: 8px;
   margin-bottom: 12px;
   padding: 16px;
   width: 340px;
   transition: border-color .3s;
+}
+
+.modal-error {
+  position: absolute;
+  top: -20px;
+  left: 0;
+  font-size: 13px;
+  color: #FF7575;
 }
 
 .modal-label svg {

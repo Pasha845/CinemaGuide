@@ -68,8 +68,8 @@
   import { useRoute } from 'vue-router';
   import { getMovie } from "../api/product";
   import type { IMovie } from '../types/product';
-  import TrailerModal from '@/components/TrailerModal.vue';
-  import LogInModal from '@/components/LogInModal.vue';
+  import TrailerModal from '../components/TrailerModal.vue';
+  import LogInModal from '../components/LogInModal.vue';
   import { useAuthStore } from '../stores/auth';
   
   const movie = ref<IMovie[]>([]);
