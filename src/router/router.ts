@@ -2,15 +2,14 @@ import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
   history: createWebHistory('/'),
+  scrollBehavior(to, from, savedPosition) {
+    return { top: 0 }
+  },
   routes: [
     {
       name: 'main',
-      path: '/main',
-      component: () => import('@/views/MainView.vue')
-    },
-    {
       path: '/',
-      redirect: { name: 'main' }
+      component: () => import('@/views/MainView.vue')
     },
     {
       name: 'genre',
@@ -19,7 +18,7 @@ const router = createRouter({
     },
     {
       name: 'types',
-      path: '/types',
+      path: '/types/:id',
       component: () => import('@/views/TypesView.vue')
     },
     {
@@ -35,16 +34,21 @@ const router = createRouter({
         {
           name: 'favorites',
           path: '/account/favorites',
-          component: () => import('@/views/AccountFavoritesView.vue')
+          component: () => import('@/components/AccountFavorites.vue')
         },
         {
           name: 'settings',
           path: '/account/settings',
-          component: () => import('@/views/AccountSettingsView.vue')
+          component: () => import('@/components/AccountSettings.vue')
         }
       ]
+    },
+    {
+      name: '404',
+      path: '/:pathMatch(.*)*',
+      component: () => import('@/views/NotFoundView.vue')
     }
   ]
-})
+});
 
 export default router
