@@ -85,8 +85,9 @@
     cardLoading.value = false;
   };
 
-  const errorCard = () => {
+  const errorCard = (event) => {
     cardLoading.value = false;
+    event.target.src = "/img/not-found.jpg"
   };
 
   const giveFavorites = async (movieId: any) => {
