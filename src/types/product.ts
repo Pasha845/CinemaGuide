@@ -1,20 +1,30 @@
 export interface IRandomFilm {
-  title: string,
-  posterUrl: string,
-  trailerUrl: string
-}
-
-export interface IProduct {
+  id: number,
   backdropUrl: string,
   tmdbRating: number,
   releaseYear: number,
   runtime: number,
   title: string,
-  plot: number,
-  id: number
+  plot: string,
+  posterUrl: string,
+  trailerUrl: string
 }
 
-export interface IFilm {
+export interface ITopFilms {
+  title: string | undefined;
+  id: number,
+  posterUrl: string
+}
+
+export interface Search {
+  id: number,
+  title: string,
+  originalTitle: string;
+  language: string;
+  releaseYear: number;
+}
+
+export interface IMovie {
   trailerUrl: string,
   posterUrl: string,
   title: string,
@@ -32,5 +42,12 @@ export interface IFilm {
 }
 
 export interface IGenre {
-  
+  id: number,
+  title: string
+}
+
+export interface IGenreFilms {
+  title: string | undefined;
+  id: number,
+  posterUrl: string
 }
