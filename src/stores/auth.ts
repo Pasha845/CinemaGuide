@@ -8,7 +8,7 @@ export interface GetProfile {
 };
 
 export interface GetFavorites {
-
+  id: string
 };
 
 export const useAuthStore = defineStore('auth', () => {

@@ -1,7 +1,7 @@
 <template>
   <router-link class="genre__item" :to="'/types/' + genre" :genre="genre">
     <div v-if="cardLoading" class="loader"></div>
-    <img class="genre__img" @load="loadCard" :src="array[index].img" :alt="genre" width="290" height="220">
+    <img class="genre__img" @load="loadCard" :src="array[index].img ? array[index].img : '/img/not-found.png'" :alt="genre" width="290" height="220">
     <p class="genre__text">{{ genre }}</p>
   </router-link>
 </template>

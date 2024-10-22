@@ -6,13 +6,13 @@
       </svg>
     </button>
     <div v-if="cardLoading" class="loader"></div>
-    <img @load="loadCard" :src="fav.posterUrl" :alt="fav.title" width="224" height="336">
+    <img @load="loadCard" :src="fav.posterUrl ? fav.posterUrl : '/img/not-found.png'" :alt="fav.title" width="224" height="336">
   </router-link>
 </template>
 
 <script setup lang="ts">
   import { ref } from 'vue';
-  import { useAuthStore } from '../stores/auth';
+  import { useAuthStore } from '@/stores/auth';
 
   const newFav = defineProps<{ fav: { id: number, posterUrl: string, title: string } }>();
   const authStore = useAuthStore();

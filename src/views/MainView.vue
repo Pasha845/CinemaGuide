@@ -1,23 +1,10 @@
 <template>
   <section class="hero">
     <div class="hero__container container">
-      <vue-load-image>
-        <template v-slot:image>
-          <img :src="movie.backdropUrl" :alt="movie.title" width="900" height="680">
-        </template>
-        <template v-slot:preloader> 
-          <div class="loader"></div>
-        </template>
-        <template v-slot:error>
-          <img src="./img/not-found.jpg" alt="Error load image" width="900" height="680">
-        </template>
-      </vue-load-image>
-
-      <!--<div v-if="cardLoading" class="load">
+      <div v-if="cardLoading" class="load">
         <div class="loader"></div>
       </div>
-      <img @load="loadCard" @error="errorCard" :src="movie.backdropUrl" :alt="movie.title" width="900" height="680">-->
-      
+      <img @load="loadCard" :src="movie.backdropUrl ? movie.backdropUrl : '/img/not-found.png'" :alt="movie.title" width="900" height="680">
       <div class="hero__item">
         <div class="hero__wrapper flex">
           <p class="hero__rating flex" :class="[{'green' : movie.tmdbRating >= 7 && movie.tmdbRating < 8, 'gray' : movie.tmdbRating <= 7 && movie.tmdbRating >= 4, 'red' : movie.tmdbRating < 4}, 'yellow']">
@@ -71,13 +58,12 @@
 
 <script setup lang="ts">
   import { ref } from 'vue';
-  import VueLoadImage from 'vue-load-image';
-  import { getRandomFilm, getTopFilms } from "../api/product";
-  import type { IRandomFilm, ITopFilms } from '../types/product';
-  import FilmCard from "../components/FilmCard.vue";
-  import TrailerModal from '../components/TrailerModal.vue';
-  import LogInModal from '../components/LogInModal.vue';
-  import { useAuthStore } from '../stores/auth';
+  import { getRandomFilm, getTopFilms } from "@/api/product";
+  import type { IRandomFilm, ITopFilms } from '@/types/product';
+  import FilmCard from "@/components/FilmCard.vue";
+  import TrailerModal from '@/components/TrailerModal.vue';
+  import LogInModal from '@/components/LogInModal.vue';
+  import { useAuthStore } from '@/stores/auth';
 
   const movie = ref<IRandomFilm[]>([]);
   const tops = ref<ITopFilms[]>([]);
@@ -97,11 +83,6 @@
 
   const loadCard = () => {
     cardLoading.value = false;
-  };
-
-  const errorCard = (event) => {
-    cardLoading.value = false;
-    event.target.src = "/img/not-found.jpg"
   };
 
   const giveFavorites = async (movieId: any) => {

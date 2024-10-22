@@ -24,6 +24,9 @@
             </svg>
             <input class="modal-input" v-model="logInPass" type="password" placeholder="Password">
           </label>
+          <label class="modal-none" v-if="userNone">
+            <span class="modal-error">This user does not exist</span>
+          </label>
           <button class="btn modal-btn mb-24" type="submit">Log in</button>
         </form>
         <button class="modal-link" @click.prevent="openSignIn">Sign up</button>
@@ -52,7 +55,7 @@
           </label>
           <label class="modal-label flex" :class="{'modal-label-error' : nameNone || nameError}">
             <span class="modal-error" v-if="nameNone">Enter name</span>
-            <span class="modal-error" v-if="nameError">Name is too short</span>
+            <span class="modal-error" v-if="nameError">Name is too short, minimum 4 letters</span>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M4 22C4 17.5817 7.58172 14 12 14C16.4183 14 20 17.5817 20 22H18C18 18.6863 15.3137 16 12 16C8.68629 16 6 18.6863 6 22H4ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13ZM12 11C14.21 11 16 9.21 16 7C16 4.79 14.21 3 12 3C9.79 3 8 4.79 8 7C8 9.21 9.79 11 12 11Z" fill="currentColor"/>
             </svg>
@@ -60,7 +63,7 @@
           </label>
           <label class="modal-label flex" :class="{'modal-label-error' : surnameNone || surnameError}">
             <span class="modal-error" v-if="surnameNone">Enter surname</span>
-            <span class="modal-error" v-if="surnameError">Surname is too short</span>
+            <span class="modal-error" v-if="surnameError">Surname is too short, minimum 6 letters</span>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M4 22C4 17.5817 7.58172 14 12 14C16.4183 14 20 17.5817 20 22H18C18 18.6863 15.3137 16 12 16C8.68629 16 6 18.6863 6 22H4ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13ZM12 11C14.21 11 16 9.21 16 7C16 4.79 14.21 3 12 3C9.79 3 8 4.79 8 7C8 9.21 9.79 11 12 11Z" fill="currentColor"/>
             </svg>
@@ -68,7 +71,7 @@
           </label>
           <label class="modal-label flex" :class="{'modal-label-error' : passNone || passError}">
             <span class="modal-error" v-if="passNone">Enter password</span>
-            <span class="modal-error" v-if="passError">Password is too short</span>
+            <span class="modal-error" v-if="passError">Password is too short, minimum 9 symbols</span>
             <svg width="22" height="12" viewBox="0 0 22 12" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M11.917 7C11.441 9.8377 8.973 12 6 12C2.68629 12 0 9.3137 0 6C0 2.68629 2.68629 0 6 0C8.973 0 11.441 2.16229 11.917 5H22V7H20V11H18V7H16V11H14V7H11.917ZM6 10C8.20914 10 10 8.2091 10 6C10 3.79086 8.20914 2 6 2C3.79086 2 2 3.79086 2 6C2 8.2091 3.79086 10 6 10Z" fill="currentColor"/>
             </svg>
@@ -108,7 +111,7 @@
 <script setup lang="ts">
   import { ref } from 'vue';
   import { useRouter } from 'vue-router';
-  import { useAuthStore } from '../stores/auth';
+  import { useAuthStore } from '@/stores/auth';
 
   const emit = defineEmits(['close', 'open']);
   defineProps({isLogInModalOpen: Boolean});
@@ -125,6 +128,7 @@
   const signInSurname = ref('');
   const signInPass = ref('');
   const signInTwoPass = ref('');
+  const userNone = ref(false);
 
   const emailNone = ref(false);
   const passNone = ref(false);
@@ -185,22 +189,33 @@
   function isValidEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
-  }
+  };
 
-  const logInModal = () => {
-    if (logInEmail.value && isValidEmail(String(logInEmail.value)) && logInPass.value) {
-      authStore.LogIn(logInEmail.value, logInPass.value);
-      closeLogin();
-      router.push({name: 'favorites'});
+  const logInModal = async () => {
+    if (isValidEmail(String(logInEmail.value)) && logInPass.value) {
+      try {
+        await authStore.LogIn(logInEmail.value, logInPass.value);
+        if (authStore.isAuth) {
+          closeLogin();
+          window.location.href = '/account/favorites';
+        };
+      } catch {
+        userNone.value = true;
+        emailNone.value = false;
+        emailError.value = false;
+        passNone.value = false;
+      };
     } else {
+      userNone.value = false;
       if (!logInEmail.value) {
         emailNone.value = true;
         emailError.value = false;
-      } else if (logInEmail.value && !isValidEmail(String(logInEmail.value))) {
+      } else if (!isValidEmail(String(logInEmail.value))) {
         emailNone.value = false;
         emailError.value = true;
       } else if (logInEmail.value) {
         emailNone.value = false;
+        emailError.value = false;
       } if (!logInPass.value) {
         passNone.value = true;
       } else if (logInPass.value) {
@@ -210,43 +225,47 @@
   };
 
   const signInModal = () => {
-    if (signInEmail.value && isValidEmail(String(signInEmail.value)) && signInName.value && signInSurname.value && signInPass.value && signInPass.value === signInTwoPass.value) {
-      /*authStore.SignUp(signInEmail.value, signInPass.value, signInName.value, signInSurname.value);*/
+    if (isValidEmail(String(signInEmail.value)) && signInName.value && signInSurname.value && signInPass.value && signInPass.value === signInTwoPass.value) {
+      authStore.SignUp(signInEmail.value, signInPass.value, signInName.value, signInSurname.value);
       closeSignIn();
       isCompleteModalOpen.value = true;
     } else {
       if (!signInEmail.value) {
         emailNone.value = true;
         emailError.value = false;
-      } else if (signInEmail.value && !isValidEmail(String(signInEmail.value))) {
+      } else if (!isValidEmail(String(signInEmail.value))) {
         emailNone.value = false;
         emailError.value = true;
       } else if (signInEmail.value) {
         emailNone.value = false;
+        emailError.value = false;
       } if (!signInName.value) {
         nameNone.value = true;
         nameError.value = false;
-      } else if (signInName.value && signInName.value.length < 4) {
+      } else if (signInName.value.length < 4) {
         nameError.value = true;
         nameNone.value = false;
       } else if (signInName.value) {
         nameNone.value = false;
+        nameError.value = false;
       } if (!signInSurname.value) {
         surnameNone.value = true;
         surnameError.value = false;
-      } else if (signInSurname.value && signInSurname.value.length < 6) {
+      } else if (signInSurname.value.length < 6) {
         surnameError.value = true;
         surnameNone.value = false;
       } else if (signInSurname.value) {
         surnameNone.value = false;
+        surnameError.value = false;
       } if (!signInPass.value) {
         passNone.value = true;
         passError.value = false;
-      } else if (signInPass.value && signInPass.value.length < 9) {
+      } else if (signInPass.value.length < 9) {
         passNone.value = false;
         passError.value = true;
       } else if (signInPass.value) {
         passNone.value = false;
+        passError.value = false;
       } if (signInPass.value !== signInTwoPass.value) {
         passTwoNone.value = true;
       } else if (signInPass.value === signInTwoPass.value) {

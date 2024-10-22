@@ -1,9 +1,9 @@
 <template>
-  <router-link class="search__item" :to="'/film/' + search.id">
+  <a class="search__item" :href="'/film/' + search.id">
     <div v-if="cardLoading" class="search__load load">
       <div class="loader"></div>
     </div>
-    <img @load="loadCard" class="search__img" :src="search.posterUrl" :alt="search.title" width="40" height="52">
+    <img @load="loadCard" class="search__img" :src="search.posterUrl ? search.posterUrl : '/img/not-found.png'" :alt="search.title" width="40" height="52">
     <div>
       <div class="search__cube flex">
         <p class="search__rating search__margin flex" :class="[{'green' : search.tmdbRating >= 7 && search.tmdbRating < 8, 'gray' : search.tmdbRating <= 7 && search.tmdbRating >= 4, 'red' : search.tmdbRating < 4}, 'yellow']">
@@ -27,7 +27,7 @@
       </div>
       <h3 class="search__title">{{ search.title }}</h3>
     </div>
-  </router-link>
+  </a>
 </template>
 
 <script setup lang="ts">

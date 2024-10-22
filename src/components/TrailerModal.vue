@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IMovie } from "../types/product";
+  import type { IMovie } from "@/types/product";
 
   defineEmits(['close']);
   defineProps<{

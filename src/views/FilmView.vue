@@ -4,7 +4,7 @@
       <div v-if="cardLoading" class="load">
         <div class="loader"></div>
       </div>
-      <img @load="loadCard" @error="errorCard" :src="movie.backdropUrl" :alt="movie.title" width="900" height="680">
+      <img @load="loadCard" :src="movie.backdropUrl ? movie.backdropUrl : '/img/not-found.png'" :alt="movie.title" width="900" height="680">
       <div class="hero__item">
         <div class="hero__wrapper flex">
           <p class="hero__rating flex" :class="[{'green' : movie.tmdbRating >= 7 && movie.tmdbRating < 8, 'gray' : movie.tmdbRating <= 7 && movie.tmdbRating >= 4, 'red' : movie.tmdbRating < 4}, 'yellow']">
@@ -64,13 +64,13 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, watch, onMounted } from 'vue';
+  import { ref, onMounted } from 'vue';
   import { useRoute } from 'vue-router';
-  import { getMovie } from "../api/product";
-  import type { IMovie } from '../types/product';
-  import TrailerModal from '../components/TrailerModal.vue';
-  import LogInModal from '../components/LogInModal.vue';
-  import { useAuthStore } from '../stores/auth';
+  import { getMovie } from "@/api/product";
+  import type { IMovie } from '@/types/product';
+  import TrailerModal from '@/components/TrailerModal.vue';
+  import LogInModal from '@/components/LogInModal.vue';
+  import { useAuthStore } from '@/stores/auth';
   
   const movie = ref<IMovie[]>([]);
   const cardLoading = ref(true);
@@ -86,10 +86,6 @@
   };
 
   const loadCard = () => {
-    cardLoading.value = false;
-  };
-
-  const errorCard = () => {
     cardLoading.value = false;
   };
 
@@ -111,12 +107,6 @@
     if (authStore.isAuth === true) {
       await authStore.GetProfile();
       isActive.value = authStore.profile.favorites.includes(movieId);
-    };
-  });
-
-  watch(() => route.params.id, (newId) => {
-    if (newId && route.name === 'film') {
-      /*loadMovie();*/
     };
   });
 

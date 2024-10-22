@@ -1,6 +1,6 @@
 <template>
   <div class="account__newlist">
-    <div class="mb-64">
+    <div class="mb-64" v-if="authStore.isAuth">
       <div class="account__subitem flex">
         <div class="account__icon">
           <div>{{ initials }}</div>
@@ -28,15 +28,9 @@
 
 <script setup lang="ts">
   import { onMounted, computed, } from 'vue';
-  import { useAuthStore } from '../stores/auth';
+  import { useAuthStore } from '@/stores/auth';
 
   const authStore = useAuthStore();
-
-  onMounted(() => {
-    if (authStore.isAuth) {
-      authStore.GetProfile();
-    };
-  });
 
   const initials = computed(() => {
     const name = authStore.profile.name || '';
