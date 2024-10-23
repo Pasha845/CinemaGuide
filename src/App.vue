@@ -1,28 +1,34 @@
 <template>
   <header class="header">
     <div class="header__container container flex">
-      <router-link class="header__logo" to="/main">
+      <router-link class="header__logo" to="/">
         <img src="/img/logo.svg" alt="Logo" width="240" height="32">
       </router-link>
       <ul class="header__menu flex">
         <li class="header__margin-link">
-          <router-link class="header__link" to="/main">Main</router-link>
+          <router-link class="header__link" :class="{'border-link' : route.name === 'main' || route.name === 'film'}" to="/">Main</router-link>
         </li>
         <li class="header__margin-link">
-          <router-link class="header__link" to="/genre">Genres</router-link>
+          <router-link class="header__link" :class="{'border-link' : route.name === 'genre' || route.name === 'types'}" to="/genre">Genres</router-link>
         </li>
         <li class="header__margin-link">
-          <label class="header__label">
-            <button class="header__btn" aria-label="Поиск">
+          <form class="header__form" v-if="isMobile" @submit.prevent="findModule">
+            <button class="header__btn" type="submit" aria-label="search">
               <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M16.031 14.6168L20.3137 18.8995L18.8995 20.3137L14.6168 16.031C13.0769 17.263 11.124 18 9 18C4.032 18 0 13.968 0 9C0 4.032 4.032 0 9 0C13.968 0 18 4.032 18 9C18 11.124 17.263 13.0769 16.031 14.6168ZM14.0247 13.8748C15.2475 12.6146 16 10.8956 16 9C16 5.1325 12.8675 2 9 2C5.1325 2 2 5.1325 2 9C2 12.8675 5.1325 16 9 16C10.8956 16 12.6146 15.2475 13.8748 14.0247L14.0247 13.8748Z" fill="white" fill-opacity="0.5"/>
-              </svg>              
+              </svg>
             </button>
-            <input class="header__input" type="search" placeholder="Search">
-          </label>
+            <input class="header__input" type="text" v-model="inputText" placeholder="Search">
+            <button class="header__exit" type="button" @click="exit" v-if="headerExit" aria-label="exit">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6.9997 5.5865L11.9495 0.636719L13.3637 2.05093L8.4139 7.0007L13.3637 11.9504L11.9495 13.3646L6.9997 8.4149L2.04996 13.3646L0.635742 11.9504L5.5855 7.0007L0.635742 2.05093L2.04996 0.636719L6.9997 5.5865Z" fill="white" fill-opacity="0.5"/>
+              </svg>
+            </button>
+            <SearchModal :quest="quest" :isSearchModalOpen="isSearchModalOpen" @click="exit"/>
+          </form>
         </li>
       </ul>
-      <button class="header__link" @click="showModalSign">Sign in</button>
+      <button class="header__link header__acount" :class="{'border-link' : route.name === 'favorites' || route.name === 'settings'}" @click="toProfile">{{ authStore.isAuth ? data : 'Log in'}}</button>
       <ul class="header__cube">
         <li class="header__margin-icon">
           <router-link class="header__icon" to="/genre" aria-label="Genres">
@@ -31,15 +37,15 @@
             </svg>
           </router-link>
         </li>
-        <li class="header__margin-icon">
-          <button class="header__icon" aria-label="Search">
+        <li class="header__margin-icon header__search">
+          <button class="header__icon" @click.prevent="isMobile = true" aria-label="Search">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z" fill="white"/>
             </svg>
           </button>
         </li>
         <li class="header__margin-icon">
-          <button class="header__icon" @click="showModalSign" aria-label="Profile">
+          <button class="header__icon" @click.prevent="toProfile" aria-label="Profile">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M4 22C4 17.5817 7.58172 14 12 14C16.4183 14 20 17.5817 20 22H18C18 18.6863 15.3137 16 12 16C8.68629 16 6 18.6863 6 22H4ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13ZM12 11C14.21 11 16 9.21 16 7C16 4.79 14.21 3 12 3C9.79 3 8 4.79 8 7C8 9.21 9.79 11 12 11Z" fill="white"/>
             </svg>
@@ -49,92 +55,7 @@
     </div>
   </header>
 
-  <div class="modal" v-if="isShowModalSign">
-    <div class="modal-container">
-      <button class="modal-exit" @click="closeModalSign">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M8.5859 10L0.792969 2.20706L2.20718 0.792847L10.0001 8.5857L17.793 0.792847L19.2072 2.20706L11.4143 10L19.2072 17.7928L17.793 19.2071L10.0001 11.4142L2.20718 19.2071L0.792969 17.7928L8.5859 10Z" fill="black"/>
-        </svg>
-      </button>
-      <img class="modal-logo" src="/img/logo.svg" alt="Logo" width="180" height="24">
-      <form class="modal-form">
-        <label class="modal-label flex">
-          <svg width="22" height="18" viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M21 0C21.5523 0 22 0.44772 22 1V17.0066C22 17.5552 21.5447 18 21.0082 18H2.9918C2.44405 18 2 17.5551 2 17.0066V16H20V4.3L12 11.5L2 2.5V1C2 0.44772 2.44772 0 3 0H21ZM8 12V14H0V12H8ZM5 7V9H0V7H5ZM19.5659 2H4.43414L12 8.8093L19.5659 2Z" fill="currentColor"/>
-          </svg>
-          <input class="modal-input" type="email" placeholder="Email" required>
-        </label>
-        <label class="modal-label modal-label-last flex">
-          <svg width="22" height="12" viewBox="0 0 22 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M11.917 7C11.441 9.8377 8.973 12 6 12C2.68629 12 0 9.3137 0 6C0 2.68629 2.68629 0 6 0C8.973 0 11.441 2.16229 11.917 5H22V7H20V11H18V7H16V11H14V7H11.917ZM6 10C8.20914 10 10 8.2091 10 6C10 3.79086 8.20914 2 6 2C3.79086 2 2 3.79086 2 6C2 8.2091 3.79086 10 6 10Z" fill="currentColor"/>
-          </svg>
-          <input class="modal-input" type="password" placeholder="Password" required>
-        </label>
-        <button class="btn modal-btn mb-24" type="submit">Sign in</button>
-      </form>
-      <button class="modal-link" @click="showModalRegist">Registration</button>
-    </div>
-  </div>
-
-  <div class="modal" v-if="isShowModalRegist">
-    <div class="modal-container modal-regist">
-      <button class="modal-exit" @click="closeModalRegist">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M8.5859 10L0.792969 2.20706L2.20718 0.792847L10.0001 8.5857L17.793 0.792847L19.2072 2.20706L11.4143 10L19.2072 17.7928L17.793 19.2071L10.0001 11.4142L2.20718 19.2071L0.792969 17.7928L8.5859 10Z" fill="black"/>
-        </svg>
-      </button>
-      <img class="modal-logo" src="/img/logo.svg" alt="Logo" width="180" height="24">
-      <p class="modal-title mb-24">Registration</p>
-      <form class="modal-form">
-        <label class="modal-label flex">
-          <svg width="22" height="18" viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M21 0C21.5523 0 22 0.44772 22 1V17.0066C22 17.5552 21.5447 18 21.0082 18H2.9918C2.44405 18 2 17.5551 2 17.0066V16H20V4.3L12 11.5L2 2.5V1C2 0.44772 2.44772 0 3 0H21ZM8 12V14H0V12H8ZM5 7V9H0V7H5ZM19.5659 2H4.43414L12 8.8093L19.5659 2Z" fill="currentColor"/>
-          </svg>
-          <input class="modal-input" type="email" placeholder="Email" required>
-        </label>
-        <label class="modal-label flex">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 22C4 17.5817 7.58172 14 12 14C16.4183 14 20 17.5817 20 22H18C18 18.6863 15.3137 16 12 16C8.68629 16 6 18.6863 6 22H4ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13ZM12 11C14.21 11 16 9.21 16 7C16 4.79 14.21 3 12 3C9.79 3 8 4.79 8 7C8 9.21 9.79 11 12 11Z" fill="black" fill-opacity="0.4"/>
-          </svg>
-          <input class="modal-input" type="text" placeholder="Name" required>
-        </label>
-        <label class="modal-label flex">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 22C4 17.5817 7.58172 14 12 14C16.4183 14 20 17.5817 20 22H18C18 18.6863 15.3137 16 12 16C8.68629 16 6 18.6863 6 22H4ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13ZM12 11C14.21 11 16 9.21 16 7C16 4.79 14.21 3 12 3C9.79 3 8 4.79 8 7C8 9.21 9.79 11 12 11Z" fill="black" fill-opacity="0.4"/>
-          </svg>
-          <input class="modal-input" type="text" placeholder="Surname" required>
-        </label>
-        <label class="modal-label flex">
-          <svg width="22" height="12" viewBox="0 0 22 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M11.917 7C11.441 9.8377 8.973 12 6 12C2.68629 12 0 9.3137 0 6C0 2.68629 2.68629 0 6 0C8.973 0 11.441 2.16229 11.917 5H22V7H20V11H18V7H16V11H14V7H11.917ZM6 10C8.20914 10 10 8.2091 10 6C10 3.79086 8.20914 2 6 2C3.79086 2 2 3.79086 2 6C2 8.2091 3.79086 10 6 10Z" fill="currentColor"/>
-          </svg>
-          <input class="modal-input" type="password" placeholder="Password" required>
-        </label>
-        <label class="modal-label modal-label-last flex">
-          <svg width="22" height="12" viewBox="0 0 22 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M11.917 7C11.441 9.8377 8.973 12 6 12C2.68629 12 0 9.3137 0 6C0 2.68629 2.68629 0 6 0C8.973 0 11.441 2.16229 11.917 5H22V7H20V11H18V7H16V11H14V7H11.917ZM6 10C8.20914 10 10 8.2091 10 6C10 3.79086 8.20914 2 6 2C3.79086 2 2 3.79086 2 6C2 8.2091 3.79086 10 6 10Z" fill="currentColor"/>
-          </svg>
-          <input class="modal-input" type="password" placeholder="Confirm password" required>
-        </label>
-        <button class="btn modal-btn mb-24" type="submit">Create an account</button>
-      </form>
-      <button class="modal-link" @click="showModalSign">I have a password</button>
-    </div>
-  </div>
-
-  <div class="modal" v-if="isShowModalCompleted">
-    <div class="modal-container">
-      <button class="modal-exit" @click="closeModalCompleted">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M8.5859 10L0.792969 2.20706L2.20718 0.792847L10.0001 8.5857L17.793 0.792847L19.2072 2.20706L11.4143 10L19.2072 17.7928L17.793 19.2071L10.0001 11.4142L2.20718 19.2071L0.792969 17.7928L8.5859 10Z" fill="black"/>
-        </svg>
-      </button>
-      <img class="modal-logo" src="/img/logo.svg" alt="Logo" width="180" height="24">
-      <p class="modal-title mb-24">Registration is completed</p>
-      <p class="modal-text mb-24">Use your email to login</p>
-      <button class="btn modal-btn" @click="showModalSign">Sign in</button>
-    </div>
-  </div>
+  <LogInModal :isLogInModalOpen="isLogInModalOpen" @close="isLogInModalOpen = false" @open="isLogInModalOpen = true" />
 
   <router-view />
 
@@ -151,7 +72,7 @@
       </div>
       <ul class="footer__cube flex">
         <li class="footer__margin-link">
-          <a class="footer__link" href="#" aria-label="">
+          <a class="footer__link" href="#" aria-label="Vkontakte">
             <svg width="19" height="11" viewBox="0 0 19 11" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M18.4865 1.37968C18.6253 0.985106 18.4865 0.698125 17.8719 0.698125H15.8298C15.3144 0.698125 15.0764 0.949207 14.9377 1.21829C14.9377 1.21829 13.8869 3.51408 12.4198 5.00273C11.9439 5.4332 11.7259 5.57669 11.4682 5.57669C11.3293 5.57669 11.1509 5.4332 11.1509 5.03862V1.36173C11.1509 0.895411 10.9923 0.680176 10.5561 0.680176H7.34436C7.02714 0.680176 6.8289 0.895411 6.8289 1.11065C6.8289 1.55907 7.56243 1.66666 7.64174 2.92217V5.64843C7.64174 6.24034 7.52281 6.34793 7.26505 6.34793C6.57115 6.34793 4.88596 4.03419 3.87484 1.39763C3.67655 0.877462 3.47831 0.680176 2.96286 0.680176H0.90093C0.306165 0.680176 0.207031 0.93131 0.207031 1.20034C0.207031 1.68461 0.90093 4.12389 3.43863 7.35236C5.12388 9.55846 7.52281 10.7422 9.68383 10.7422C10.9923 10.7422 11.1509 10.4732 11.1509 10.0248V8.3568C11.1509 7.81868 11.2699 7.72904 11.6862 7.72904C11.9836 7.72904 12.5189 7.87248 13.7283 8.9307C15.1161 10.1862 15.354 10.7602 16.1272 10.7602H18.1693C18.764 10.7602 19.0416 10.4911 18.883 9.97098C18.7046 9.45087 18.0305 8.69757 17.1582 7.80073C16.6823 7.29857 15.9686 6.74256 15.7505 6.47347C15.4531 6.1148 15.5324 5.97131 15.7505 5.64843C15.7307 5.64843 18.2287 2.45585 18.4865 1.37968Z" fill="white" fill-opacity="0.8"/>
             </svg>
@@ -165,7 +86,7 @@
           </a>
         </li>
         <li class="footer__margin-link">
-          <a class="footer__link" href="#" aria-label="">
+          <a class="footer__link" href="#" aria-label="Odnoklassniki">
             <svg width="12" height="19" viewBox="0 0 12 19" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M7.91902 13.2622L10.5725 15.8238C11.116 16.3474 11.116 17.1978 10.5725 17.722C10.0294 18.2462 9.14932 18.2462 8.60687 17.722L5.99801 15.2048L3.39142 17.722C3.11963 17.9838 2.76349 18.1149 2.40735 18.1149C2.05178 18.1149 1.69621 17.9838 1.42441 17.722C0.881398 17.1978 0.881398 16.348 1.42385 15.8238L4.07758 13.2622C3.1114 13.0497 2.17958 12.6802 1.32132 12.1604C0.671803 11.7651 0.476693 10.9369 0.885942 10.3094C1.29406 9.68105 2.15232 9.49189 2.80297 9.8872C4.74612 11.0671 7.24933 11.0674 9.19362 9.8872C9.84428 9.49189 10.7023 9.68105 11.1112 10.3094C11.5205 10.9364 11.3248 11.7651 10.6753 12.1604C9.81701 12.6807 8.8852 13.0497 7.91902 13.2622Z" fill="white" fill-opacity="0.8"/>
               <path fill-rule="evenodd" clip-rule="evenodd" d="M1.24023 4.94193C1.24023 7.46791 3.36913 9.52263 5.98679 9.52263C8.60502 9.52263 10.7333 7.46791 10.7333 4.94193C10.7333 2.41513 8.60502 0.359863 5.98679 0.359863C3.36913 0.359863 1.24023 2.41513 1.24023 4.94193ZM7.95202 4.94145C7.95202 3.89531 7.07048 3.04463 5.98672 3.04463C4.90381 3.04463 4.02141 3.89531 4.02141 4.94145C4.02141 5.98676 4.90381 6.83799 5.98672 6.83799C7.07048 6.83799 7.95202 5.98676 7.95202 4.94145Z" fill="white" fill-opacity="0.8"/>
@@ -185,146 +106,222 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue';
-  import { RouterLink } from 'vue-router';
+  import { ref, watch, onMounted, computed } from 'vue';
+  import { useRoute, RouterLink } from 'vue-router';
+  import { getSearchFilms } from "@/api/product";
+  import type { Search } from '@/types/product';
+  import LogInModal from '@/components/LogInModal.vue';
+  import SearchModal from '@/components/SearchModal.vue';
+  import { useAuthStore } from '@/stores/auth';
+  import { useRouter } from 'vue-router';
 
-  const isShowModalSign = ref(false)
-  const isShowModalRegist = ref(false)
-  const isShowModalCompleted = ref(false)
+  const authStore = useAuthStore();
+  const quest = ref<Search[]>([]);
+  const route = useRoute();
+  const inputText = ref('');
+  const headerExit = ref(false);
+  const isMobile = ref(true);
+  const isSearchModalOpen = ref(false);
+  const isLogInModalOpen = ref(false);
+  const windowWidth = ref(window.innerWidth);
+  const data = computed(() => authStore.profile.surname);
+  const router = useRouter();
 
-  function showModalSign () {
-    isShowModalRegist.value = false
-    isShowModalCompleted.value = false
-    isShowModalSign.value = true
-  }
-  
-  function closeModalSign () {
-    isShowModalSign.value = false
-  }
+  watch(quest, () => {
+    if (quest.value.length === 0) {
+      isSearchModalOpen.value = false;
+    }
+  });
 
-  function showModalRegist () {
-    isShowModalSign.value = false
-    isShowModalRegist.value = true
-  }
+  const handleResize = () => {
+    windowWidth.value = window.innerWidth;
+  };
 
-  function closeModalRegist () {
-    isShowModalRegist.value = false
-  }
+  if (windowWidth.value < 576) {
+    isMobile.value = false;
+  };
 
-  function showModalCompleted () {
-    isShowModalRegist.value = false
-    isShowModalCompleted.value = true
-  }
+  watch(inputText, (newValue) => {
+    headerExit.value = newValue !== '';
+    
+    if (newValue === '') {
+      isSearchModalOpen.value = false;
+    }
 
-  function closeModalCompleted () {
-    isShowModalCompleted.value = false
-  }
-</script> 
+    const loadSearchFilms = async () => {
+      const response = await getSearchFilms(inputText.value);
+      quest.value = response;
+    };
 
-<style scoped>
+    loadSearchFilms();
+  });
+
+  const findModule = () => {
+    isSearchModalOpen.value = inputText.value !== '' && quest.value.length !== 0;
+  };
+
+  const exit = () => {
+    inputText.value = '';
+    isSearchModalOpen.value = false;
+    headerExit.value = false;
+    if (windowWidth.value < 576) {
+      isMobile.value = false;
+    };
+  };
+
+  if (authStore.isAuth === true) {
+    onMounted(() => {authStore.GetProfile()});
+  };
+
+  const toProfile = () => {
+    if (!authStore.isAuth) {
+      isLogInModalOpen.value = true;
+    } else {
+      router.push({name: 'favorites'});
+    };
+  };
+</script>
+
+<style lang="scss">
   .header {
     padding: 24px 0;
     background: #00000080;
-  }
 
-  .header__container {
-    justify-content: space-between;
-  }
-
-  .header__logo {
-    display: inline-block;
-    flex-shrink: 0;
-  }
-
-  .header__margin-link:not(:last-child) {
-    margin-right: 40px;
-  }
-
-  .header__margin-link:first-child .header__link {
-    border-bottom: 1.5px solid #DC5DFC;
-  }
-
-  .header__link {
-    border: none;
-    padding: 8px 0;
-    font-size: 24px;
-    line-height: 32px;
-    color: white;
-    background: none;
-    cursor: pointer;
-  }
-
-  .header__label {
-    position: relative;
-    display: block;
-    width: 480px;
-  }
-
-  .header__btn {
-    position: absolute;
-    top: 14px;
-    left: 18px;
-    border: none;
-    padding: 0;
-    background: none;
-    cursor: pointer;
-  }
-
-  .header__input {
-    border: none;
-    border-radius: 8px;
-    padding: 14px 16px;
-    padding-left: 52px;
-    width: 100%;
-    color: white;
-    background: #393B3C;
-  }
-
-  .header__input:focus {
-    outline: none;
-  }
-
-  .header__input::placeholder {
-    color: white;
-    opacity: 0.5;
-  }
-
-  .header__cube {
-    display: none;
-  }
-
-  @media (max-width: 576px) {
-    .header {
-      padding: 16px 0;
+    &__container {
+      justify-content: space-between;
+    }
+  
+    &__logo,
+    &__icon {
+      display: inline-block;
+      flex-shrink: 0;
     }
 
-    .header__logo img {
-      width: 136px;
-      height: 18px;
+    &__margin-link:not(:last-child) {
+      margin-right: 40px;
     }
 
-    .header__menu,
-    .header__link {
-      display: none;
+    &__link {
+      border: none;
+      padding: 8px 0;
+      padding-bottom: 9px;
+      font-size: 24px;
+      line-height: 32px;
+      color: white;
+      background: none;
+      cursor: pointer;
     }
 
-    .header__cube {
-      display: flex;
+    &__form {
+      position: relative;
+      display: block;
+      border-radius: 8px;
+      padding: 12px 52px;
+      width: 455px;
+      background: #393B3C;
     }
 
-    .header__margin-icon:not(:last-child) {
-      margin-right: 20px;
-    }
-
-    .header__icon {
+    &__btn {
+      position: absolute;
+      top: 14px;
+      left: 18px;
       border: none;
       padding: 0;
       background: none;
       cursor: pointer;
     }
 
-    .header__icon:focus {
+    &__input {
+      border: none;
+      width: 100%;
+      color: white;
+      background: #393B3C;
+    }
+
+    &__exit {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      border: none;
+      padding: 0;
+      background: none;
+      cursor: pointer;
+    }
+
+    &__input::placeholder {
+      color: white;
+      opacity: 0.5;
+    }
+
+    &__cube {
+      display: none;
+    }
+
+    &__logo:focus,
+    &__link:focus,
+    &__btn:focus,
+    &__input:focus,
+    &__exit:focus,
+    &__icon:focus {
       outline: none;
+    }
+  }
+
+  .border-link {
+    border-bottom: 1.5px solid #DC5DFC;
+  }
+
+  @media (max-width: 1024px) {
+    .header {
+      &__link {
+        display: none;
+      }
+    
+      &__cube {
+        display: flex;
+      }
+
+      &__margin-icon:not(:last-child) {
+        margin-right: 20px;
+      }
+
+      &__icon {
+        border: none;
+        padding: 0;
+        background: none;
+        cursor: pointer;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .header {
+      &__btn {
+        top: 18px;
+      }
+
+      &__form {
+        position: absolute;
+        top: 16px;
+        left: 20px;
+        padding: 16px 52px;
+        width: calc(100% - 144px);
+      }
+
+      &__exit {
+        top: 14px;
+      }
+    }
+  }
+
+  @media (max-width: 576px) {
+    .header {
+      padding: 16px 0;
+
+      &__logo img {
+        width: 136px;
+        height: 25px;
+      }
     }
   }
   
@@ -333,83 +330,110 @@
   .footer {
     padding: 40px 0;
     background: #0A0B0B;
-  }
+  
+    &__list {
+      justify-content: space-between;
+    }
 
-  .footer__list {
-    justify-content: space-between;
-  }
+    &__copyright {
+      font-weight: 700;
+    }
 
-  .footer__copyright {
-    font-weight: 700;
-  }
+    &__text {
+      margin-right: 14px;
+    }
 
-  .footer__text {
-    margin-right: 14px;
-  }
+    &__subtext {
+      margin-left: 14px;
+      font-weight: 400;
+      opacity: 0.7;
+    }
 
-  .footer__subtext {
-    margin-left: 14px;
-    font-weight: 400;
-    opacity: 0.7;
-  }
+    &__margin-link:not(:last-child) {
+      margin-right: 24px;
+    }
+    
+    &__margin-link {
+      width: 36px;
+      height: 36px;
+    }
 
-  .footer__margin-link:not(:last-child) {
-    margin-right: 24px;
-  }
+    &__link {
+      position: relative;
+      display: inline-block;
+      border: 1px solid #FFFFFFCC;
+      border-radius: 8px;
+      width: 34px;
+      height: 34px;
+      svg {
+        display: inline-block;
+        flex-shrink: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
 
-  .footer__link {
-    position: relative;
-    display: inline-block;
-    border: 1px solid #FFFFFFCC;
-    border-radius: 8px;
-    width: 34px;
-    height: 34px;
-  }
-
-  .footer__link svg {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  .footer__link:focus {
-    outline: none;
+    &__link:focus {
+      outline: none;
+    }
   }
 
   @media (max-width: 576px) {
     .footer {
       padding: 24px 0;
-    }
+    
+      &__copyright,
+      &__list {
+        flex-direction: column;
+        align-items: flex-start;
+      }
 
-    .footer__copyright,
-    .footer__list {
-      flex-direction: column;
-      align-items: flex-start;
-    }
+      &__copyright {
+        margin-bottom: 32px;
+      }
 
-    .footer__copyright {
-      margin-bottom: 32px;
-    }
+      &__text {
+        margin: 0;
+        margin-bottom: 8px;
+      }
 
-    .footer__text {
-      margin: 0;
-      margin-bottom: 8px;
-    }
+      &__subtext {
+        margin-left: 12px;
+        font-size: 14px;
+        line-height: 20px;
+      }
 
-    .footer__subtext {
-      margin-left: 12px;
-      font-size: 14px;
-      line-height: 20px;
-    }
+      &__cube {
+        margin-bottom: 12px;
+      }
+      
+      &__margin-link {
+        width: 24px;
+        height: 24px;
+      }
 
-    .footer__cube {
-      margin-bottom: 12px;
-    }
+      &__link {
+        width: 22px;
+        height: 22px;
+      }
 
-    .footer__link {
-      width: 24px;
-      height: 24px;
+      &__margin-link:first-child &__link svg {
+        width: 12px;
+      }
+
+      &__margin-link:nth-child(2) &__link svg {
+        width: 10px;
+      }
+
+      &__margin-link:nth-child(3) &__link svg {
+        width: 7px;
+      }
+
+      &__margin-link:nth-child(4) &__link svg {
+        width: 11px;
+      }
     }
   }
 </style>

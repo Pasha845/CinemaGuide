@@ -16,29 +16,30 @@
 
 <script setup lang="ts">
   import { ref } from 'vue'
-  import { getGenreFilms } from "@/api/product"
+  import { getGenres } from "@/api/product"
   import GenreCard from "@/components/GenreCard.vue"
   import type { IGenre } from '@/types/product';
 
   const genres = ref<IGenre[]>([])
 
   const loadGenreFilms = async () => {
-    const response = await getGenreFilms()
+    const response = await getGenres()
     genres.value = response
   }
 
   loadGenreFilms()
 </script>
 
-<style scoped>
+<style lang="scss">
   @media (max-width: 576px) {
     .genre {
       padding-top: 24px;
       padding-bottom: 40px;
-    }
 
-    .genre__list {
-      gap: 24px;
+      &__list {
+        justify-content: center;
+        gap: 24px;
+      }
     }
   }
 </style>

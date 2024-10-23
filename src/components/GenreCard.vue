@@ -1,15 +1,25 @@
 <template>
-  <router-link class="genre__item" to="/types">
-    <img class="genre__img" :src="array[index].img" alt="Genre image" width="290" height="220">
-    <p class="genre__text">{{ genre[0].toUpperCase() + genre.slice(1) }}</p>
+  <router-link class="genre__item" :to="'/types/' + genre" :genre="genre">
+    <div v-if="cardLoading" class="loader"></div>
+    <img class="genre__img" @load="loadCard" :src="array[index].img ? array[index].img : '/img/not-found.png'" :alt="genre" width="290" height="220">
+    <p class="genre__text">{{ genre }}</p>
   </router-link>
 </template>
 
 <script setup lang="ts">
   import { ref } from 'vue';
-  import type { IGenre } from "@/types/product";
 
-  const props = defineProps<{ genre: IGenre, index: IGenre }>()
+  defineProps<{
+    genre: string,
+    index: number
+  }>();
+
+  const cardLoading = ref(true);
+
+  const loadCard = () => {
+    cardLoading.value = false;
+  };
+  
   const array = ref([
     {
       img: '/img/history.jpg'
@@ -74,41 +84,53 @@
   ])
 </script>
 
-<style scoped>
-  .genre__item {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid #FFFFFF40;
-    border-radius: 24px;
-    box-sizing: border-box;
-    width: 290px;
-    height: 304px;
-    background: #616161;
-    box-shadow: 0px 0px 80px 0px #FFFFFF54;
-  }
+<style lang="scss">
+  .genre {
+    &__item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #FFFFFF40;
+      border-radius: 24px;
+      box-sizing: border-box;
+      width: 290px;
+      height: 304px;
+      background: #616161;
+      box-shadow: 0px 0px 80px 0px #FFFFFF54;
+      transition: .8s;
+    }
 
-  .genre__img {
-    border-top-left-radius: 24px;
-    border-top-right-radius: 24px;
-    width: 100%;
-    height: 100%;
-  }
+    &__item:hover {
+      transform: scale(1.2);
+    }
 
-  .genre__text {
-    text-align: center;
-    border-bottom-left-radius: 24px;
-    border-bottom-right-radius: 24px;
-    padding-top: 22px;
-    padding-bottom: 30px;
-    font-size: 24px;
-    line-height: 32px;
-    font-weight: 700;
-    background: #0A0B0B;
+    &__img {
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      width: 100%;
+      height: 100%;
+    }
+
+    &__text {
+      text-transform: capitalize;
+      text-align: center;
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+      padding-top: 22px;
+      padding-bottom: 30px;
+      font-size: 24px;
+      line-height: 32px;
+      font-weight: 700;
+      background: #0A0B0B;
+    }
   }
 
   @media (max-width: 576px) {
-    .genre__item {
-      width: 100%;
+    .genre {
+      &__item {
+        width: 333px;
+        height: 302px;
+      }
     }
   }
 </style>
