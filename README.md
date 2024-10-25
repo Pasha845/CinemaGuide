@@ -1,3 +1,5 @@
 # Разработка онлайн-платформы CinemaGuide
 
-![logo](https://github.com/Pasha845/CinemaGuide/assets/106194295/3217bb2d-a7a0-4ed6-bf6f-40cd31a78f4e)
+С работой можно ознакомиться по ссылке: http://p99624sv.beget.tech/
+
+![Безымянный](https://github.com/user-attachments/assets/6b11bff9-bf58-4a96-85e5-70f01eb46ce8)
